@@ -1,0 +1,3 @@
+[submodule "CRReviewAPI"]
+	path = CRReviewAPI
+	url = https://github.com/limlance99/CRReviewAPI
