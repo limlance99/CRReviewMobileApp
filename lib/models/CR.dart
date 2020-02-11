@@ -20,7 +20,7 @@ class CR {
   int floor;
   String gender;
   List facilities;
-
+  
   CR(this.locationid, this.floor, this.gender, this.facilities);
 
   factory CR.fromJson(Map<String, dynamic> json) {

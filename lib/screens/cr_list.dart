@@ -11,12 +11,15 @@ Code History:
   Jan 23, 2020: Lance Lim - Linked the add_cr.dart to the page.
 */
 
+
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import '../forms/add_cr.dart';
+import './view_cr.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../utility.dart';
 
 // CRList: Stateful Widget that will contain all the logic and UI for the CR List screen.
 class CRList extends StatefulWidget {
@@ -121,8 +124,19 @@ class _CRListState extends State<CRList> {
       children: <Widget>[
         ListTile(
           title: Text(item["location"]["address"].toString()), 
-          subtitle: _floorOfCR(item["floor"]),
-          trailing: _genderIcon(item["gender"]),
+          subtitle: floorOfCR(item["floor"]),
+          trailing: genderIcon(item["gender"]),
+          onTap: () async {
+            bool result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewCR(title: "View CR", cr: item), 
+              )
+            );
+            if (result) {
+              getJSONData();
+            }
+          }
         ),
       ],
     ),
@@ -136,60 +150,6 @@ class _CRListState extends State<CRList> {
     this.getJSONData();
   }
 
-  // _floorOfCR: Widget that handles string logic to display the proper floor of the CR.
-  // ex. 2 => 2nd Floor.
-  //   floor: number that represents the floor of an item.
-  Widget _floorOfCR(floor) {
-
-    // floorString: empty string that will eventually store the final string to be printed.
-    String floorString = "";
-
-    // lastDigit: the last digit of the floor.
-    int lastDigit = floor % 10;
-    if (lastDigit == 1) {
-     if ((floor % 100) % 11 == 0) floorString = "${floor}th";
-     else floorString = "${floor}st";
-    }
-    else if (lastDigit == 2) floorString = "${floor}nd";
-    else if (lastDigit == 3) floorString = "${floor}rd";
-    else floorString = "${floor}th";
-
-    return Text("$floorString Floor");
-  }
-
-  // _genderIcon: Widget that displays the gender logo depending on the gender passed.
-  //   gender: gender to be used for logo.
-  Widget _genderIcon(gender) {
-    // _gender: gender but in string.
-    var _gender = gender.toString();
-    switch(_gender) {
-      case "M":
-        // return SvgPicture.asset(
-        //   "assets/images/male.svg",
-        //   color: Colors.blue,
-        // );
-        return Icon(
-          Icons.person,
-          color: Colors.blue,
-        );
-        break;
-      case "F":
-        // return SvgPicture.asset(
-        //   "assets/images/female.svg",
-        //   color: Colors.pink,
-        // );
-        return Icon(
-          Icons.person,
-          color: Colors.pink,
-        );  
-      default:
-        return Icon(
-          Icons.person,
-          color: Colors.grey,
-        );
-    }
-  }
-
   // getJSONData: HTTP GET request to get the list of CRs from the database.
   Future<void> getJSONData() async {
 
@@ -198,9 +158,10 @@ class _CRListState extends State<CRList> {
     
     // response: response of the GET request
     var response  = await http.get(url);
-
+    print(response);
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
       setState(() {
         data = jsonResponse;
       });
@@ -209,4 +170,5 @@ class _CRListState extends State<CRList> {
     }
     print("Get JSON got called");
   }
+
 }

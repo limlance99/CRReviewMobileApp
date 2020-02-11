@@ -152,9 +152,7 @@ class _AddCRState extends State<AddCR> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {
-              _addNewCR();
-            },
+            onPressed: _addNewCR,
           ),
         ],
       ),
