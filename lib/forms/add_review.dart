@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import '../models/Review.dart';
 
 class AddReview extends StatefulWidget {
+  final int crid;
+
+  AddReview({
+    Key key,
+    @required this.crid,
+  }) : super(key : key);
+
   @override
   _AddReviewState createState() => _AddReviewState();
 }
 
 class _AddReviewState extends State<AddReview> {
-  
-  double rating1 = 0;
-  double rating2 = 0;
-  double rating3 = 0;
+
+  int rating1 = 0;
+  int rating2 = 0;
+  int rating3 = 0;
   String reviewText = "";
   final TextEditingController _reviewTextController =
       new TextEditingController();
@@ -23,25 +31,29 @@ class _AddReviewState extends State<AddReview> {
   }
 
 
-  void _addNewReview() {
+  Future<void> _addNewReview() async {
     // [STUB] SOMEONE PLEASE FINISH THIS
     reviewText = _reviewTextController.text;
     print(rating1);
     print(rating2);
     print(rating3);
     print("'" + reviewText + "'");
-
-    if (rating1 == 0 || rating2 == 0 || rating3 == 0) {
-      // If missing a rating, do nothing
-      return;
-    }
-
     // Save review to database using API
 
+    var url = 'https://crreviewapi.herokuapp.com/api/reviews';
 
+    var newReview = new Review(crid, reviewText, rating1, rating2, rating3).toMap();
 
-    // Return to previous screen
-    Navigator.pop(context, true);
+    var bodyEncoded = convert.json.encode(newReview);
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: bodyEncoded,
+    );
+    if (response.statusCode == 200) {
+      Navigator.pop(context, true);
+    }
+
   }
 
   @override
@@ -69,12 +81,13 @@ class _AddReviewState extends State<AddReview> {
               child: Column(
                   children: <Widget>[
                     Text(
-                      "Rating 1", 
+                      "Rating 1",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       initialRating: 0,
+                      allowHalfRating: false,
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -86,12 +99,13 @@ class _AddReviewState extends State<AddReview> {
                     ),
                     Padding(padding: EdgeInsets.all(15)),
                     Text(
-                      "Rating 2", 
+                      "Rating 2",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       initialRating: 0,
+                      allowHalfRating: false,
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -103,12 +117,13 @@ class _AddReviewState extends State<AddReview> {
                     ),
                     Padding(padding: EdgeInsets.all(15)),
                     Text(
-                      "Rating 3", 
+                      "Rating 3",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       initialRating: 0,
+                      allowHalfRating: false,
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -120,7 +135,7 @@ class _AddReviewState extends State<AddReview> {
                     ),
                     Padding(padding: EdgeInsets.all(25)),
                     Text(
-                      "Comments", 
+                      "Comments",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     Container(
@@ -140,7 +155,7 @@ class _AddReviewState extends State<AddReview> {
 
                   ],
                 ),
-            ),  
+            ),
           ],
         ),
       ),

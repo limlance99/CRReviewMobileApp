@@ -64,7 +64,7 @@ class _ViewCRState extends State<ViewCR> {
     for (int i = 0; i < reviews.length; i++) {
       aveRating1 += reviews[i]["rating1"];
       aveRating2 += reviews[i]["rating2"];
-      aveRating3 += reviews[i]["rating3"];    
+      aveRating3 += reviews[i]["rating3"];
     }
 
     aveRating1 = aveRating1 / reviews.length;
@@ -78,16 +78,16 @@ class _ViewCRState extends State<ViewCR> {
     }
   }
 
-  @override 
+  @override
   void initState() {
     super.initState();
-    
+
     _getJSONData();
     _getAverageRatings();
   }
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +105,7 @@ class _ViewCRState extends State<ViewCR> {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddReview(),
+                  builder: (context) => AddReview({crid: widget.cr["id"]}),
                 )
               );
             },
@@ -173,7 +173,7 @@ class _ViewCRState extends State<ViewCR> {
                       padding: EdgeInsets.all(16.0),
                     ),
                     Text(
-                      "Rating 1", 
+                      "Rating 1",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
@@ -191,7 +191,7 @@ class _ViewCRState extends State<ViewCR> {
                       padding: EdgeInsets.all(16.0),
                     ),
                     Text(
-                      "Rating 2", 
+                      "Rating 2",
                       style: Theme.of(context).textTheme.headline,
                     ),
 
@@ -210,9 +210,9 @@ class _ViewCRState extends State<ViewCR> {
                       padding: EdgeInsets.all(16.0),
                     ),
                     Text(
-                      "Rating 3", 
+                      "Rating 3",
                       style: Theme.of(context).textTheme.headline,
-                    ),         
+                    ),
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
@@ -247,7 +247,7 @@ class _ViewCRState extends State<ViewCR> {
                   padding: EdgeInsets.all(6.0),
                 ),
                 Text(
-                  "REVIEWS", 
+                  "REVIEWS",
                   style: Theme.of(context).textTheme.headline,
                 ),
                 Padding(
@@ -260,7 +260,7 @@ class _ViewCRState extends State<ViewCR> {
             ),
           );
 
-          
+
         }
         return Container();
       },
@@ -294,13 +294,13 @@ class _ViewCRState extends State<ViewCR> {
         )
       );
       ret.add(
-        Row( 
+        Row(
           children: <Widget>[
             Container(
               child: Column(
                 children: <Widget>[
                   Text(
-                    "Rating 1", 
+                    "Rating 1",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
@@ -318,7 +318,7 @@ class _ViewCRState extends State<ViewCR> {
                     padding: EdgeInsets.all(3.0),
                   ),
                   Text(
-                    "Ratings 2", 
+                    "Ratings 2",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
@@ -336,7 +336,7 @@ class _ViewCRState extends State<ViewCR> {
                     padding: EdgeInsets.all(3.0),
                   ),
                   Text(
-                    "Rating 3", 
+                    "Rating 3",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
