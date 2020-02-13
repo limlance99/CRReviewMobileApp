@@ -370,7 +370,7 @@ class _ViewCRState extends State<ViewCR> {
 
                 // Display rating bar for Rating 2 of current review
                   Text(
-                    "Ratings 2",
+                    "Rating 2",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
