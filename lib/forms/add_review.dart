@@ -7,8 +7,7 @@ the Department of Computer Science, College of Engineering,
 University of the Philippines, Diliman for the AY 2019-2020.
 
 Code History:
-	Feb 13, 2020: JV Afable - Initialized file.
-  Feb 13, 2020: JP Chanchico - Completed _addNewReview() function
+  Feb 13, 2020: JP Chanchico - Initialized File
 */
 
 import 'package:flutter/material.dart';
