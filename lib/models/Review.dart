@@ -39,9 +39,9 @@ class Review {
     var map = new Map<String, dynamic>();
     map["crid"] = crid;
     map["reviewtext"] = reviewText;
-    map["rating1"] = rating1;
-    map["rating2"] = rating2;
-    map["rating3"] = rating3;
+    map["rating1"] = rating1.toInt();
+    map["rating2"] = rating2.toInt();
+    map["rating3"] = rating3.toInt();
 
     return map;
   }

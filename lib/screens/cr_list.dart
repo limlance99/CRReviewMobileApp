@@ -164,9 +164,10 @@ class _CRListState extends State<CRList> {
       // jsonResponse: response body decoded from json
       var jsonResponse = convert.jsonDecode(response.body);
       print(jsonResponse);
-      setState(() {
-        data = jsonResponse;
-      });
+      if (mounted)
+        setState(() {
+          data = jsonResponse;
+        });
     } else {
       print("Request failed with status: ${response.statusCode}");
     }

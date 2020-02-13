@@ -67,11 +67,12 @@ class _ViewCRState extends State<ViewCR> {
       // jsonResponse: response body decoded from json
       var jsonResponse = convert.jsonDecode(response.body);
       print(jsonResponse);
-      setState(() {
-        if (jsonResponse["reviews"] != null) {
-          reviews = jsonResponse["reviews"];
-        }
-      });
+      if (mounted)
+        setState(() {
+          if (jsonResponse["reviews"] != null) {
+            reviews = jsonResponse["reviews"];
+          }
+        });
     } else {
       print("Request failed with status: ${response.statusCode}");
     }
@@ -79,14 +80,14 @@ class _ViewCRState extends State<ViewCR> {
     print("Get JSON got called");
 
     // For debugging purposes
-    for (int i = 0; i < 5; i++) {
-      var temp = new Map<String, dynamic>();
-      temp["rating1"] = 3.0;
-      temp["rating2"] = 3.0;
-      temp["rating3"] = 3.0;
-      temp["reviewtext"] = "THIS IS AN AMAZIN CR Lorem Ipsum my dude ${i+1}";
-      reviews.add(temp);
-    }
+    // for (int i = 0; i < 5; i++) {
+    //   var temp = new Map<String, dynamic>();
+    //   temp["rating1"] = 3.0;
+    //   temp["rating2"] = 3.0;
+    //   temp["rating3"] = 3.0;
+    //   temp["reviewtext"] = "THIS IS AN AMAZIN CR Lorem Ipsum my dude ${i+1}";
+    //   reviews.add(temp);
+    // }
   }
 
   // _getAverageRatings: function to get the average for each of the 3 ratings
@@ -220,7 +221,7 @@ class _ViewCRState extends State<ViewCR> {
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating1,
+                      initialRating: aveRating1.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -240,7 +241,7 @@ class _ViewCRState extends State<ViewCR> {
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating2,
+                      initialRating: aveRating2.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -260,7 +261,7 @@ class _ViewCRState extends State<ViewCR> {
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating3,
+                      initialRating: aveRating3.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -354,7 +355,7 @@ class _ViewCRState extends State<ViewCR> {
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating1"],
+                    initialRating: reviews[i]["rating1"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
@@ -374,7 +375,7 @@ class _ViewCRState extends State<ViewCR> {
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating2"],
+                    initialRating: reviews[i]["rating2"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
@@ -394,7 +395,7 @@ class _ViewCRState extends State<ViewCR> {
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating3"],
+                    initialRating: reviews[i]["rating3"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
