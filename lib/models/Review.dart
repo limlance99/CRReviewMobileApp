@@ -7,11 +7,12 @@ the Department of Computer Science, College of Engineering,
 University of the Philippines, Diliman for the AY 2019-2020.
 
 Code History:
-	Jan 23, 2020: John Philip Chanchico - Initialized file.
+	Feb 13, 2020: John Philip Chanchico - Initialized file.
 */
 
 import 'package:json_annotation/json_annotation.dart';
 
+// Review: class for the reviews, who's main use is to be able to send data in JSON format.     
 @JsonSerializable()
 class Review {
   int crid;
@@ -25,13 +26,15 @@ class Review {
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       json['crid'],
-      json['reviewText'],
+      json['reviewtext'],
       json['rating1'],
       json['rating2'],
       json['rating3'],
     );
   }
 
+  // toMap: maps the values of the attributes of a Review into a key-value pair map.
+  //       returns a map that is JSON convertable. 
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["crid"] = crid;

@@ -21,7 +21,7 @@ class AddCR extends StatefulWidget {
   _AddCRState createState() => _AddCRState();
 }
 
-// _AddCRState: State that will provide all the logic and UI for the ADD CR form. 
+// _AddCRState: State that will provide all the logic and UI for the Add CR form. 
 class _AddCRState extends State<AddCR> {
   
   // locations: will contain the list of locations to be presented in the drop down.

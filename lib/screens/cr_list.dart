@@ -160,6 +160,8 @@ class _CRListState extends State<CRList> {
     var response  = await http.get(url);
     print(response);
     if (response.statusCode == 200) {
+
+      // jsonResponse: response body decoded from json
       var jsonResponse = convert.jsonDecode(response.body);
       print(jsonResponse);
       setState(() {

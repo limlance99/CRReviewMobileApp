@@ -1,3 +1,14 @@
+/*
+Authors: JV Afable, JP Chanchico, Lance Lim
+This is a course requirement for CS 192 Software Engineering II
+under the supervision of Asst. Prof. Ma. Rowena C. Solamo of
+the Department of Computer Science, College of Engineering,
+University of the Philippines, Diliman for the AY 2019-2020.
+Code History:
+  Jan 23, 2020: Lance Lim - Coded the functions
+	Feb 13, 2020: JV Afable - Transferred functions to separate file
+*/
+
 import 'package:flutter/material.dart';
 
 // _floorOfCR: Widget that handles string logic to display the proper floor of the CR.
