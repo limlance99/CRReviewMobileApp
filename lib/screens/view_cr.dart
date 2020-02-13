@@ -126,6 +126,7 @@ class _ViewCRState extends State<ViewCR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text(widget.title),
         leading: IconButton(
