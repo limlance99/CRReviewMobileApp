@@ -67,7 +67,7 @@ class _AddReviewState extends State<AddReview> {
     print(rating3);
     print("'" + reviewText + "'");
 
-    if (rating1 + rating2 + rating3 < 3) {
+    if (rating1 == 0 || rating2 == 0 || rating3 == 0) {
       print("Missing Ratings");
       return;
     }
