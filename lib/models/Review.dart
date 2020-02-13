@@ -15,20 +15,20 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonSerializable()
 class Review {
   int crid;
-  int reviewText;
-  int rating1;
-  int rating2;
-  int rating3;
+  String reviewText;
+  double rating1;
+  double rating2;
+  double rating3;
 
   Review(this.crid, this.reviewText, this.rating1, this.rating2, this.rating3);
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      json['crid'];
-      json['reviewText'];
-      json['rating1'];
-      json['rating2'];
-      json['rating3'];
+      json['crid'],
+      json['reviewText'],
+      json['rating1'],
+      json['rating2'],
+      json['rating3'],
     );
   }
 

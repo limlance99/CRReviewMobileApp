@@ -17,10 +17,10 @@ class AddReview extends StatefulWidget {
 }
 
 class _AddReviewState extends State<AddReview> {
-
-  int rating1 = 0;
-  int rating2 = 0;
-  int rating3 = 0;
+  int crid = -1;
+  double rating1 = 0;
+  double rating2 = 0;
+  double rating3 = 0;
   String reviewText = "";
   final TextEditingController _reviewTextController =
       new TextEditingController();
@@ -28,6 +28,7 @@ class _AddReviewState extends State<AddReview> {
   @override
   void initState() {
     super.initState();
+    crid = widget.crid;
   }
 
 
@@ -38,6 +39,11 @@ class _AddReviewState extends State<AddReview> {
     print(rating2);
     print(rating3);
     print("'" + reviewText + "'");
+
+    if (rating1 + rating2 + rating3 < 3) {
+      print("Missing Ratings");
+      return;
+    }
     // Save review to database using API
 
     var url = 'https://crreviewapi.herokuapp.com/api/reviews';
@@ -51,7 +57,10 @@ class _AddReviewState extends State<AddReview> {
       body: bodyEncoded,
     );
     if (response.statusCode == 200) {
+      print("Successfully Added!");
       Navigator.pop(context, true);
+    } else {
+      print("Error Adding Review :((");
     }
 
   }

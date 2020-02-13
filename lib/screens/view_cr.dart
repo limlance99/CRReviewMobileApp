@@ -105,7 +105,7 @@ class _ViewCRState extends State<ViewCR> {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddReview({crid: widget.cr["id"]}),
+                  builder: (context) => AddReview(crid: widget.cr["id"]),
                 )
               );
             },
@@ -358,7 +358,7 @@ class _ViewCRState extends State<ViewCR> {
             ),
             Container(
               alignment: Alignment.centerRight,
-              width: 200.0,
+              width: 175.0,
               child: Column(
                 children: <Widget>[
                   Text(reviews[i]["reviewtext"], textAlign: TextAlign.right,)
