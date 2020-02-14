@@ -126,6 +126,7 @@ class _ViewCRState extends State<ViewCR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text(widget.title),
         leading: IconButton(
@@ -370,7 +371,7 @@ class _ViewCRState extends State<ViewCR> {
 
                 // Display rating bar for Rating 2 of current review
                   Text(
-                    "Ratings 2",
+                    "Rating 2",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,

@@ -115,94 +115,129 @@ class _AddReviewState extends State<AddReview> {
           ),
         ],
       ),
+      backgroundColor: Colors.green[50],
       body: Container(
         child: ListView(
           children: <Widget>[
-            Padding(padding: EdgeInsets.all(15)),
+            // Padding(padding: EdgeInsets.all(15)),
             Center(
               child: Column(
                   children: <Widget>[
-
-                    // Display rating bar for Rating 1
-                    Text(
-                      "Rating 1",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                    RatingBar(
-                      direction: Axis.horizontal,
-                      initialRating: 0,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        rating1 = rating;
-                      },
-                    ),
-                    Padding(padding: EdgeInsets.all(15)),
-
-                    // Display rating bar for Rating 2
-                    Text(
-                      "Rating 2",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                    RatingBar(
-                      direction: Axis.horizontal,
-                      initialRating: 0,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating){
-                        rating2 = rating;
-                      },
-                    ),
-                    Padding(padding: EdgeInsets.all(15)),
-
-                    // Display rating bar for Rating 3
-                    Text(
-                      "Rating 3",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                    RatingBar(
-                      direction: Axis.horizontal,
-                      initialRating: 0,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating){
-                        rating3 = rating;
-                      },
-                    ),
-                    Padding(padding: EdgeInsets.all(25)),
-
-                    // Display text field to input review text
-                    Text(
-                      "Comments",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
                     Container(
-                      margin: EdgeInsets.only(left: 20.0, right: 20.0),
-                      child: TextField(
-                        controller: _reviewTextController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          hintText: "Your thoughts on the CR...",
-                        ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      margin: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(16.0),
+                      width: 500.0,
+                      child: Column(
+                        children: <Widget>[
+                        // Display rating bar for Rating 1
+                          Text(
+                            "Rating 1",
+                            style: Theme.of(context).textTheme.headline,
+                          ),
+                          Divider(),
+                          RatingBar(
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              rating1 = rating;
+                            },
+                          ),
+                          Divider(
+                            indent: 50.0,
+                            endIndent: 50.0,
+                          ),
+                          Padding(padding: EdgeInsets.all(15)),
+
+                        // Display rating bar for Rating 2
+                          Text(
+                            "Rating 2",
+                            style: Theme.of(context).textTheme.headline,
+                          ),
+                          Divider(),
+                          RatingBar(
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating){
+                              rating2 = rating;
+                            },
+                          ),
+                          Divider(
+                            indent: 50.0,
+                            endIndent: 50.0,
+                          ),
+                          Padding(padding: EdgeInsets.all(15)),
+
+                        // Display rating bar for Rating 3
+                          Text(
+                            "Rating 3",
+                            style: Theme.of(context).textTheme.headline,
+                          ),
+                          Divider(),
+                          RatingBar(
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating){
+                              rating3 = rating;
+                            },
+                          ),
+                          Divider(
+                            indent: 50.0,
+                            endIndent: 50.0,
+                          )
+                        ]
                       )
                     ),
-
-                    Padding(
-                      padding: EdgeInsets.all(20),
+                    
+                    // Display text field to input review text
+                    Container(
+                      padding: EdgeInsets.all(20.0),
+                      margin: EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Comments",
+                            style: Theme.of(context).textTheme.headline,
+                          ),
+                          Divider(
+                            thickness: 3.0,
+                          ), 
+                          Container(
+                            margin: EdgeInsets.only(left: 20.0, right: 20.0),
+                            child: TextField(
+                              controller: _reviewTextController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                hintText: "Your thoughts on the CR...",
+                              ),
+                            )
+                          ),
+                        ],
+                      )
                     ),
-
                   ],
                 ),
             ),
