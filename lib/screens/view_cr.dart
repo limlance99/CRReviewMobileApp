@@ -262,7 +262,7 @@ class _ViewCRState extends State<ViewCR> {
   }
 
   // _buildListView: deals with the list formatting of the screen
-  // reviews: list that should contain the reviews to display
+  // reviews: list that should contain the kjbDFSLKJfsdLKhcasklcmhbreviews to display
   Widget _buildListView(reviews) {
     return ListView.builder(
       padding: EdgeInsets.all(16.0),
