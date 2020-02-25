@@ -32,6 +32,8 @@ Widget floorOfCR(floor) {
   return Text("$floorString Floor");
 }
 
+
+
 // _genderIcon: Widget that displays the gender logo depending on the gender passed.
 //   gender: gender to be used for logo.
 Widget genderIcon(gender) {
