@@ -10,6 +10,8 @@ Code History:
 	Feb 13, 2020: JV Afable - Initialized file. 
 */
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -142,6 +144,7 @@ class _ViewCRState extends State<ViewCR> {
     super.initState();
 
     _getJSONData();
+    _getCRFacilities();
     _getAverageRatings();
   }
 
@@ -210,28 +213,52 @@ class _ViewCRState extends State<ViewCR> {
     _refreshController.refreshCompleted();
   }
 
-  List<Widget> _buildFacilities(facilities) {
+  List<Widget> _buildFacilityIcons(facilities) {
     List<Widget> ret = [];
+
+    if (facilities.length == 0) {
+      ret.add(
+        Text(
+          "No facilities available",
+          style: TextStyle(
+            color: Colors.black54
+          ),
+        )
+      );
+    }
 
     for (int i = 0; i < facilities.length; i++) {
       ret.add(
-        Padding(
-          padding: EdgeInsets.all(3.0),
-        )
-      );
-      ret.add(
-        Text(
-          facilities[i]["facilityname"],
-          textAlign: TextAlign.right,
-        ),
-      );
-      ret.add(
-          Padding(
-            padding: EdgeInsets.all(3.0),
-          )
+        facilityIcon(facilities[i]["fid"])
       );
     }
     return ret;
+  }
+
+  Widget _buildFacilities(facilities) {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: _buildFacilityIcons(facilities),
+        ),
+        FlatButton(
+          onPressed: () {
+            /*...*/
+          },
+          child: Text(
+            "EDIT",
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: BorderSide(
+              color: Color(0xff333333)
+            ),
+          ),
+        )
+      ]
+    );
   }
 
   // _buildListView: deals with the list formatting of the screen
@@ -350,7 +377,8 @@ class _ViewCRState extends State<ViewCR> {
                   Divider(
                     thickness: 3.0,
                   ),
-                ] + _buildFacilities(facilities)
+                  _buildFacilities(facilities),
+                ]
             ),
           );
         }

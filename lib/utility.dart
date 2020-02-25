@@ -32,7 +32,32 @@ Widget floorOfCR(floor) {
   return Text("$floorString Floor");
 }
 
+Widget facilityIcon(fid) {
+  switch(fid) {
+    case 1:
+      return Image.asset(
+        "assets/images/handsoap.png",
+        width: 120,
+        height: 120,
+      );
+      break;
+    case 2:
+      return Image.asset(
+        "assets/images/bidet.png",
+        width: 120,
+        height: 120,
+      );
+      break;
+    default:
+      return Image.asset(
+        "assets/images/toiletpaper.png",
+        width: 120,
+        height: 120,
+      );
+      break;
+  }
 
+}
 
 // _genderIcon: Widget that displays the gender logo depending on the gender passed.
 //   gender: gender to be used for logo.

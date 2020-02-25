@@ -53,6 +53,9 @@ flutter:
   assets:
     - assets/images/male.svg
     - assets/images/female.svg
+    - assets/images/handsoap.png
+    - assets/images/bidet.png
+    - assets/images/toiletpaper.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
