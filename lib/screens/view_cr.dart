@@ -19,6 +19,7 @@ import '../utility.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../forms/add_review.dart';
+import '../forms/edit_facilities.dart';
 
 // ViewCR: Stateful Widget that will contain all the logic and UI for the View CR screen
 class ViewCR extends StatefulWidget {
@@ -244,11 +245,17 @@ class _ViewCRState extends State<ViewCR> {
           children: _buildFacilityIcons(facilities),
         ),
         FlatButton(
-          onPressed: () {
-            /*...*/
+          onPressed: () async {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditFacilities(facilitiesCR: facilities),
+                )
+            );
           },
-          child: Text(
-            "EDIT",
+          child: Icon(
+            Icons.edit,
+            color: Colors.black,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),

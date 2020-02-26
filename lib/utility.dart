@@ -37,22 +37,22 @@ Widget facilityIcon(fid) {
     case 1:
       return Image.asset(
         "assets/images/handsoap.png",
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
       );
       break;
     case 2:
       return Image.asset(
         "assets/images/bidet.png",
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
       );
       break;
     default:
       return Image.asset(
         "assets/images/toiletpaper.png",
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
       );
       break;
   }
