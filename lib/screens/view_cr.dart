@@ -10,6 +10,8 @@ Code History:
 	Feb 13, 2020: JV Afable - Initialized file. 
 */
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -17,6 +19,7 @@ import '../utility.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../forms/add_review.dart';
+import '../forms/edit_facilities.dart';
 
 // ViewCR: Stateful Widget that will contain all the logic and UI for the View CR screen
 class ViewCR extends StatefulWidget {
@@ -43,6 +46,8 @@ class _ViewCRState extends State<ViewCR> {
   // reviews: list that will contain the reviews retrieved from the backend
   List reviews = [];
 
+  List facilities = [];
+
   // aveRating1: number variable that will contain the average rating for rating1 
   num aveRating1 = 0.0;
 
@@ -51,6 +56,27 @@ class _ViewCRState extends State<ViewCR> {
 
   // aveRating3: number variable that will contain the average rating for rating3 
   num aveRating3 = 0.0;
+
+  Future<void> _getCRFacilities() async {
+    var url = "https://crreviewapi.herokuapp.com/api/facilities/${widget.cr["id"]}";
+    var response = await http.get(url);
+
+    facilities = [];
+
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      if (mounted)
+        setState(() {
+          if (jsonResponse.length != 0) {
+            facilities = jsonResponse;
+          }
+        });
+    } else {
+      print("Request failed with status: ${response.statusCode}");
+    }
+    print("Facilities called");
+    print(response);
+  }
 
   // getJSONData: HTTP GET request to get the list of reviews from the database.
   Future<void> _getJSONData() async {
@@ -119,6 +145,7 @@ class _ViewCRState extends State<ViewCR> {
     super.initState();
 
     _getJSONData();
+    _getCRFacilities();
     _getAverageRatings();
   }
 
@@ -168,6 +195,7 @@ class _ViewCRState extends State<ViewCR> {
   // _onLoading: what to do when the reviews get loaded
   void _onLoading() async {
     setState(() {
+        _getCRFacilities();
         _getJSONData();
         _getAverageRatings();
       }
@@ -178,14 +206,70 @@ class _ViewCRState extends State<ViewCR> {
   // _onRefresh: what to do when then the widget refreshes.
   void _onRefresh() {
     setState(() {
+        _getCRFacilities();
+        _getJSONData();
         _getAverageRatings();
       }
     );
     _refreshController.refreshCompleted();
   }
 
+  List<Widget> _buildFacilityIcons(facilities) {
+    List<Widget> ret = [];
+
+    if (facilities.length == 0) {
+      ret.add(
+        Text(
+          "No facilities available",
+          style: TextStyle(
+            color: Colors.black54
+          ),
+        )
+      );
+    }
+
+    for (int i = 0; i < facilities.length; i++) {
+      ret.add(
+        facilityIcon(facilities[i]["fid"])
+      );
+    }
+    return ret;
+  }
+
+  Widget _buildFacilities(facilities) {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: _buildFacilityIcons(facilities),
+        ),
+        FlatButton(
+          onPressed: () async {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditFacilities(facilitiesCR: facilities),
+                )
+            );
+          },
+          child: Icon(
+            Icons.edit,
+            color: Colors.black,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: BorderSide(
+              color: Color(0xff333333)
+            ),
+          ),
+        )
+      ]
+    );
+  }
+
   // _buildListView: deals with the list formatting of the screen
-  // reviews: list that should contain the reviews to display
+  // reviews: list that should contain the kjbDFSLKJfsdLKhcasklcmhbreviews to display
   Widget _buildListView(reviews) {
     return ListView.builder(
       padding: EdgeInsets.all(16.0),
@@ -213,7 +297,6 @@ class _ViewCRState extends State<ViewCR> {
                     Padding(
                       padding: EdgeInsets.all(16.0),
                     ),
-
                   // Display rating bar of the average of Rating 1
                     Text(
                       "Rating 1",
@@ -278,9 +361,36 @@ class _ViewCRState extends State<ViewCR> {
             )
           );
         }
-
-      // Logic for building review list
         if (i == 1) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            margin: EdgeInsets.all(6),
+            padding: EdgeInsets.all(6),
+            child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget> [
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                  ),
+                  Text(
+                    "FACILITIES",
+                    style: Theme.of(context).textTheme.headline,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                  ),
+                  Divider(
+                    thickness: 3.0,
+                  ),
+                  _buildFacilities(facilities),
+                ]
+            ),
+          );
+        }
+      // Logic for building review list
+        if (i == 2) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
