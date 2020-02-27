@@ -5,10 +5,12 @@ import 'package:http/http.dart' as http;
 
 class EditFacilities extends StatefulWidget {
   final List facilitiesCR;
+  final int crid;
 
   EditFacilities({
     Key key,
     @required this.facilitiesCR,
+    @required this.crid,
   }) : super(key : key);
 
   @override
@@ -16,6 +18,8 @@ class EditFacilities extends StatefulWidget {
 }
 
 class _EditFacilitiesState extends State<EditFacilities> {
+  int crid;
+
   List facilities = [];
 
   List facilitiesCR = [];
@@ -26,6 +30,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
   void initState() {
     super.initState();
     facilitiesCR = widget.facilitiesCR;
+    crid = widget.crid;
 
     _getFacilities();
   }
@@ -53,9 +58,37 @@ class _EditFacilitiesState extends State<EditFacilities> {
     }
   }
 
-  void _updateFacilityBoxes() {
-    for (int i = 0; (i < facilitiesCR.length && i < facilityBoxes.length); i++) {
-      facilityBoxes[facilitiesCR[i]["fid"]] = true;
+  Map facilityMap(crid, facilities) {
+    var map = new Map<String, dynamic>();
+
+    map["crid"] = crid;
+    map["facilities"] = facilities;
+
+    return map;
+  }
+
+  Future<void> _editFacility() async {
+    var url = "";
+    //var url = "https://crreviewapi.herokuapp.com/api/facilities/edit/${crid}";
+
+    var availableFacilities = [];
+
+    var i = 0;
+    for (var facility in facilities) {
+      if (facilityBoxes[i] == true) availableFacilities.add(facility["fid"]);
+      i++;
+    }
+
+    var bodyEncoded = convert.json.encode(facilityMap(crid, availableFacilities));
+
+    // response: response of the POST request
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: bodyEncoded,
+    );
+    if (response.statusCode == 200) {
+      Navigator.pop(context, true);
     }
   }
 
@@ -72,7 +105,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () => {},
+            onPressed: _editFacility,
           ),
         ],
       ),
