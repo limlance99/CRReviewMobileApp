@@ -50,7 +50,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
           facilities = jsonResponse;
           for (var i = 0; i < facilities.length; i++) facilityBoxes.add(false);
           for (int i = 0; (i < facilitiesCR.length && i < facilityBoxes.length); i++) {
-            facilityBoxes[facilitiesCR[i]["fid"]] = true;
+            facilityBoxes[facilitiesCR[i]["fid"]-1] = true;
           }
         });
     } else {
