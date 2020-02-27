@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import '../models/CR.dart';
 
 
 class EditFacilities extends StatefulWidget {
@@ -59,6 +58,15 @@ class _EditFacilitiesState extends State<EditFacilities> {
     }
   }
 
+  Map facilityMap(crid, facilities) {
+    var map = new Map<String, dynamic>();
+
+    map["crid"] = crid;
+    map["facilities"] = facilities;
+
+    return map;
+  }
+
   Future<void> _editFacility() async {
     var url = "";
     //var url = "https://crreviewapi.herokuapp.com/api/facilities/edit/${crid}";
@@ -71,9 +79,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
       i++;
     }
 
-    var newCR = new CR(0, 0, "M", availableFacilities).toMap();
-
-    var bodyEncoded = convert.json.encode(newCR);
+    var bodyEncoded = convert.json.encode(facilityMap(crid, availableFacilities));
 
     // response: response of the POST request
     var response = await http.post(
