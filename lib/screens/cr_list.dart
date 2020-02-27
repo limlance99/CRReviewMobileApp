@@ -117,6 +117,7 @@ class _CRListState extends State<CRList> {
     
     decoration: BoxDecoration(
       color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
     ),
 
     margin: EdgeInsets.all(8),
