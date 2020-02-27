@@ -13,11 +13,11 @@
             <!-- <b-navbar-item tag="router-link" to="/routes">Database</b-navbar-item> -->
           </template>
 
-          <template slot="end">
+          <!-- <template slot="end">
             <b-navbar-dropdown label="Tables" hoverable>
               <b-navbar-item tag="router-link" to="/crs">CRs</b-navbar-item>
             </b-navbar-dropdown>
-          </template>
+          </template> -->
         </b-navbar>
       </div>
 

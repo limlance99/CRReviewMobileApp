@@ -18,11 +18,12 @@ const routes = [
     name: "CRs",
     component: () => import('@/views/CRs.vue'),
   },
-  // {
-  //   path: '/people',
-  //   name: "People",
-  //   component: () => import('@/views/People.vue'),
-  // },
+  {
+    path: '/reviews/:crid',
+    name: "Reviews",
+    props: true,
+    component: () => import('@/views/Reviews.vue'),
+  },
   // {
   //   path: '/applynow',
   //   name: "Apply Now",

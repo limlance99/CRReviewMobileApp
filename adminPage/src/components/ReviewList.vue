@@ -12,25 +12,15 @@
       <template slot-scope="props">
         <b-table-column field="id" label="ID">{{ props.row.id }}</b-table-column>
 
-        <b-table-column
-          field="location.address"
-          label="Location"
-        >{{ props.row.location.address }}</b-table-column>
+        <b-table-column field="createdat" label="Date Created">{{ props.row.createdat }}</b-table-column>
 
-        <b-table-column field="floor" label="Floor">{{ props.row.floor }}</b-table-column>
+        <b-table-column field="rating1" label="Rating 1">{{ props.row.rating1 }}</b-table-column>
+        <b-table-column field="rating2" label="Rating 2">{{ props.row.rating2 }}</b-table-column>
+        <b-table-column field="rating3" label="Rating 3">{{ props.row.rating3 }}</b-table-column>
 
-        <b-table-column field="gender" label="Gender">{{ props.row.gender }}</b-table-column>
-        <b-table-column label="Edit">
-          <b-button
-            type="is-success"
-            @click="goToReviews(props.row.id)"
-          >Edit Reviews</b-button>
-        </b-table-column>
+        <b-table-column field="reviewtext" label="Review Text">{{ props.row.reviewtext }}</b-table-column>
         <b-table-column label="Delete">
-          <b-button 
-            type="is-warning"
-            @click="removeCR(props.row.id)"
-          >Delete</b-button>
+          <b-button type="is-warning" @click="removeReview(props.row.id)">Delete</b-button>
         </b-table-column>
       </template>
 
@@ -45,6 +35,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  props: ["crid"],
   data() {
     return {
       data: [],
@@ -56,10 +47,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["ListofCRs"])
+    ...mapGetters(["ListofReviews"])
   },
   methods: {
-    ...mapActions(["fetchTable", "deleteCR"]),
+    ...mapActions(["fetchTable", "deleteReview"]),
 
     async onSort(field, order) {
       this.sortField = field;
@@ -76,16 +67,16 @@ export default {
     },
 
     goToReviews(crid) {
-      this.$router.push({path: `/reviews/${crid}`});
+      this.$router.push({ path: `/reviews/${crid}` });
     },
-    async removeCR(id) {
+    async removeReview(id) {
       this.tableLoading = true;
-      var response = await this.deleteCR(id);
+      var response = await this.deleteReview(id);
       if (response) {
-        this.data = this.ListofCRs;
-        this.$buefy.toast.open('CR deleted successfully!');
+        this.data = this.ListofReviews;
+        this.$buefy.toast.open("Review deleted successfully!");
       } else {
-        this.$buefy.toast.open('An error occured :(');
+        this.$buefy.toast.open("An error occured :(");
       }
       this.tableLoading = false;
     }
@@ -94,14 +85,16 @@ export default {
   async mounted() {
     this.tableLoading = true;
     var details = {
-      table: "crs",
+      table: "reviews",
       field: this.sortField,
-      order: this.sortOrder
+      order: this.sortOrder,
+      id: this.crid
     };
     let status = await this.fetchTable(details);
     switch (status) {
       case 500:
-        this.data = this.ListofCRs;
+        this.data = this.ListofReviews;
+        console.log(this.data);
         break;
       case 409:
         this.data = [];

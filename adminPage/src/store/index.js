@@ -56,6 +56,7 @@ const state = {
   businessList: [],
   peopleList: [],
   CRList: [],
+  ReviewList: [],
 }
 
 const getters = {
@@ -70,19 +71,24 @@ const getters = {
   },
   ListofPeople: (state) => state.businessList,
   ListofCRs: (state) => state.CRList,
+  ListofReviews: (state) => state.ReviewList,
 }
 
 const actions = {
   async fetchTable({ commit }, details) {
-    // var table = details.table;
+    var table = details.table;
     // var field = details.field;
     // var order = details.order;
-    console.log(details);
+    // console.log(details);
+    var response;
     try {
-      var response = await axios.get(`${localTestURL}/api/crs`);
-      commit('setCRs', response.data);
-      console.log(response.data)
-      
+      if (table == "crs") {
+        response = await axios.get(`${localTestURL}/api/crs`);
+        commit('setCRs', response.data);
+      } else if (table == "reviews") {
+        response = await axios.get(`${localTestURL}/api/reviews/${details.id}`)
+        commit('setReviews', response.data.reviews);
+      }
       return 500;
     }
     catch(err) {
@@ -108,11 +114,6 @@ const actions = {
     var response = await axios.put(`${localTestURL}/api/businesses`, data);
     commit("updateBusiness", response.data)
   },
-  async deleteBusiness({ commit }, businessname) {
-    businessname = businessname.trim();
-    var response = await axios.delete(`${localTestURL}/api/businesses/${businessname}`)
-    commit("deleteBusiness", response.data.businessname)
-  },
   async deleteCR({ commit }, crid) {
    var response = await axios.delete(`${localTestURL}/api/crs/${crid}`);
    console.log(response);
@@ -122,13 +123,20 @@ const actions = {
    } else {
      return false;
    }
-   
   },
+  async deleteReview({ commit }, reviewid) {
+    var response = await axios.delete(`${localTestURL}/api/reviews/${reviewid}`);
+    if (response.status == 200) {
+      commit("deleteTheReview", reviewid);
+      return true;
+    } else return false;
+  }
 }
 
 const mutations = {
   setBusinesses: (state, data) => state.businessList = data,
   setCRs: (state, data) => state.CRList = data,
+  setReviews: (state, data) => state.ReviewList = data,
   setPeople: (state, data) => state.peopleList = data,
   addBusiness: (state, data) => {
 
@@ -148,8 +156,8 @@ const mutations = {
       } 
     }
   },
-  deleteBusiness: (state, name) => state.businessList = state.businessList.filter(x => x.businessname != name),
   deleteTheCR: (state, crid) => state.CRList = state.CRList.filter(x => x.id != crid),
+  deleteTheReview: (state, reviewid) => state.ReviewList = state.ReviewList.filter(x => x.id != reviewid),
 }
 export default new Vuex.Store({
   state,
