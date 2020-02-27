@@ -68,8 +68,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
   }
 
   Future<void> _editFacility() async {
-    var url = "";
-    //var url = "https://crreviewapi.herokuapp.com/api/facilities/edit/${crid}";
+    var url = "https://crreviewapi.herokuapp.com/api/facilities/edit";
 
     var availableFacilities = [];
 
