@@ -246,12 +246,16 @@ class _ViewCRState extends State<ViewCR> {
         ),
         FlatButton(
           onPressed: () async {
-            await Navigator.push(
+            bool result = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EditFacilities(facilitiesCR: facilities),
-                )
+                  builder: (context) => EditFacilities(facilitiesCR: facilities, crid: widget.cr["id"]),
+                ),
             );
+            if (result) {
+              _getCRFacilities();
+              _getJSONData();
+            }
           },
           child: Icon(
             Icons.edit,
