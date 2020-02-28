@@ -12,7 +12,7 @@
       <template slot-scope="props">
         <b-table-column field="id" label="ID">{{ props.row.id }}</b-table-column>
 
-        <b-table-column field="createdat" label="Date Created">{{ props.row.createdat }}</b-table-column>
+        <b-table-column field="createdat" label="Date Created">{{ parseDate(props.row.createdat) }}</b-table-column>
 
         <b-table-column field="rating1" label="Rating 1">{{ props.row.rating1 }}</b-table-column>
         <b-table-column field="rating2" label="Rating 2">{{ props.row.rating2 }}</b-table-column>
@@ -52,6 +52,10 @@ export default {
   methods: {
     ...mapActions(["fetchTable", "deleteReview"]),
 
+    parseDate(dateString) {
+      var formattedDate = new Date(dateString.replace(' ', 'T'));
+      return formattedDate;
+    },
     async onSort(field, order) {
       this.sortField = field;
       this.sortOrder = order;

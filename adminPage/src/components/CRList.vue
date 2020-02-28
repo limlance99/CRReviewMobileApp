@@ -12,6 +12,8 @@
       <template slot-scope="props">
         <b-table-column field="id" label="ID">{{ props.row.id }}</b-table-column>
 
+        <b-table-column field="createdat" label="Created At">{{ parseDate(props.row.createdat) }}</b-table-column>
+
         <b-table-column
           field="location.address"
           label="Location"
@@ -75,6 +77,10 @@ export default {
       this.tableLoading = false;
     },
 
+    parseDate(dateString) {
+      var formattedDate = new Date(dateString.replace(' ', 'T'));
+      return formattedDate;
+    },
     goToReviews(crid) {
       this.$router.push({path: `/reviews/${crid}`});
     },
