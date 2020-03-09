@@ -53,8 +53,8 @@ class _CRListState extends State<CRList> {
       case 1:
         return FlutterMap(
           options: MapOptions(
-            center: LatLng(51.5, -0.09),
-            zoom: 13.0,
+            center: LatLng(14.654722, 121.064722),
+            zoom: 18.0,
           ),
           layers: [
             TileLayerOptions(
@@ -66,7 +66,7 @@ class _CRListState extends State<CRList> {
                 Marker(
                   width: 80.0,
                   height: 80.0,
-                  point: LatLng(51.5, -0.09),
+                  point: LatLng(14.654722, 121.064722),
                   builder: (ctx) =>
                   Container(
                     child: FlutterLogo(),
