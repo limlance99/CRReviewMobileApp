@@ -17,6 +17,8 @@ import '../models/CR.dart';
 
 // AddCR: Stateful Widget that will contains the states for the Add CR form.
 class AddCR extends StatefulWidget {
+  AddCR({Key key}) : super(key: key);
+
   @override
   _AddCRState createState() => _AddCRState();
 }

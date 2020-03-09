@@ -9,6 +9,8 @@ Code History:
 */
 
 import 'package:flutter/material.dart';
+import 'utility.dart';
+import 'botnavcontroller.dart';
 import './screens/cr_list.dart';
 
 void main() => runApp(MyApp());
@@ -20,9 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CR Review',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: MaterialColor(0xFF0F4C81, colorSwatch()),
+        fontFamily: 'Inter',
       ),
-      home: CRList(title: 'CR Review'),
+      home: CRList(),
     );
   }
 }
