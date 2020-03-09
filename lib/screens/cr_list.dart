@@ -22,6 +22,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../utility.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 
 // CRList: Stateful Widget that will contain all the logic and UI for the CR List screen.
 class CRList extends StatefulWidget {
@@ -42,9 +43,14 @@ class _CRListState extends State<CRList> {
   // data: list that will contain the CRs retrieved from the backend.
   List data = [];
   List locations = [];
-
+  Position position;
   int _selected = 0;
 
+  Future<void> getPosition() async {
+    position = await Geolocator().getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+    );
+  }
   Widget pageChooser() {
     switch (this._selected) {
       case 0:
@@ -53,7 +59,7 @@ class _CRListState extends State<CRList> {
       case 1:
         return FlutterMap(
           options: MapOptions(
-            center: LatLng(14.654722, 121.064722),
+            center: LatLng(position.latitude, position.longitude),
             zoom: 18.0,
           ),
           layers: [
@@ -66,7 +72,7 @@ class _CRListState extends State<CRList> {
                 Marker(
                   width: 80.0,
                   height: 80.0,
-                  point: LatLng(14.654722, 121.064722),
+                  point: LatLng(position.latitude, position.longitude),
                   builder: (ctx) =>
                   Container(
                     child: FlutterLogo(),
@@ -255,6 +261,7 @@ class _CRListState extends State<CRList> {
       // call get json data function
       this.getJSONData();
       this.getLocations();
+      this.getPosition();
     }
 
     // getJSONData: HTTP GET request to get the list of CRs from the database.
