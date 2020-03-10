@@ -108,9 +108,8 @@ export default {
     };
     let status = await this.fetchTable(details);
     switch (status) {
-      case 500:
+      case 200:
         this.data = this.ListofReviews;
-        console.log(this.data);
         break;
       case 409:
         this.data = [];

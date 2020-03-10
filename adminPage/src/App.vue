@@ -8,6 +8,7 @@ University of the Philippines, Diliman for the AY 2019-2020.
 
 Code History:
 	Feb 27, 2020: Lance Lim - Initialized file.
+  Mar 10. 2020: Lance Lim - Added logout button.
 -->
 
 <template>
@@ -21,15 +22,13 @@ Code History:
             </b-navbar-item>
           </template>
           <template slot="start">
-            <b-navbar-item tag="router-link" to="/crs">CRs</b-navbar-item>
+            <b-navbar-item tag="router-link" to="/crs" v-if="JWTToken != null">CRs</b-navbar-item>
             <!-- <b-navbar-item tag="router-link" to="/routes">Database</b-navbar-item> -->
           </template>
 
-          <!-- <template slot="end">
-            <b-navbar-dropdown label="Tables" hoverable>
-              <b-navbar-item tag="router-link" to="/crs">CRs</b-navbar-item>
-            </b-navbar-dropdown>
-          </template> -->
+          <template slot="end">
+            <b-button type="is-dark" @click="Logout" v-if="JWTToken != null">Logout</b-button>
+          </template>
         </b-navbar>
       </div>
 
@@ -61,13 +60,22 @@ Code History:
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 export default {
   data() {
     return {
       logo: require("@/assets/launchlogo.png"),
       turtle: require("@/assets/turtlez.png")
     };
-  }
+  },
+  computed: mapGetters(['JWTToken']),
+  methods: {
+    Logout() {
+      localStorage.removeItem('user');
+      this.$store.state.token = null;
+      this.$router.go();
+    }
+  },
 };
 </script>
 
@@ -75,7 +83,7 @@ export default {
 @import "~bulma/sass/utilities/_all";
 
 // Set your colors
-$primary: #000000;
+$primary: #40c791;
 $primary-invert: findColorInvert($primary);
 
 $whoabackground: #95A844;

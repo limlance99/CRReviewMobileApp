@@ -118,7 +118,7 @@ export default {
     };
     let status = await this.fetchTable(details);
     switch (status) {
-      case 500:
+      case 200:
         this.data = this.ListofCRs;
         break;
       case 409:

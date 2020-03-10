@@ -7,7 +7,8 @@ the Department of Computer Science, College of Engineering,
 University of the Philippines, Diliman for the AY 2019-2020.
 
 Code History:
-	Feb 27, 2020: Lance Lim - Initialized file.
+  Feb 27, 2020: Lance Lim - Initialized file.
+  March 10, 2020: Lance Lim - Added authorization redirection.
 */
 
 import Vue from 'vue'
@@ -19,6 +20,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('@/views/Home.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Login.vue')
   },
   {
     path: '/crs',
@@ -45,4 +51,18 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
+  if (authRequired && !loggedIn) {
+    return next('/login');
+  } else if (!authRequired && loggedIn) {
+    return next('/');
+  }
+
+  next();
+})
 export default router
