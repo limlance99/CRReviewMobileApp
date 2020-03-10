@@ -45,6 +45,8 @@ class _AddCRState extends State<AddCR> {
   final TextEditingController _floorNumberController =
       new TextEditingController();
 
+  bool pressed = false;
+
   // initState: Logic to be done before Add CR build is called.
   @override
   void initState() {
@@ -98,7 +100,6 @@ class _AddCRState extends State<AddCR> {
 
   // _addNewCR: HTTP POST request to add a new CR into the database.
   Future<void> _addNewCR() async {
-    
     // url: the address that will be used to get the data.
     var url = 'https://crreviewapi.herokuapp.com/api/crs';
 
@@ -109,7 +110,11 @@ class _AddCRState extends State<AddCR> {
     var floor = int.parse(_floorNumberController.text);
 
     if (floor < 1) return;
-    
+
+    setState(() {
+      pressed = true;
+    });
+
     // gender: gets the current value of the gender dropdown.
     var gender = genderDropdown;
 
@@ -154,7 +159,8 @@ class _AddCRState extends State<AddCR> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: _addNewCR,
+            disabledColor: Colors.grey,
+            onPressed: pressed ? null : _addNewCR,
           ),
         ],
       ),

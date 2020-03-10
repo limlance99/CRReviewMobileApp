@@ -52,6 +52,8 @@ class _AddReviewState extends State<AddReview> {
   final TextEditingController _reviewTextController =
       new TextEditingController();
 
+  bool pressed = false;
+
   // initState: Logic to be done before Add Review build is called.
   @override
   void initState() {
@@ -83,6 +85,10 @@ class _AddReviewState extends State<AddReview> {
     // bodyEncoded: converts the newCR into a JSON encoded map.
     var bodyEncoded = convert.json.encode(newReview);
 
+    setState(() {
+      pressed = true;
+    });
+
     // response: response of the POST request
     var response = await http.post(
       url,
@@ -112,7 +118,8 @@ class _AddReviewState extends State<AddReview> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: _addNewReview,
+            disabledColor: Colors.grey,
+            onPressed: pressed ? null : _addNewReview,
           ),
         ],
       ),

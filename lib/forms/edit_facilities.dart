@@ -26,6 +26,8 @@ class _EditFacilitiesState extends State<EditFacilities> {
 
   List<bool> facilityBoxes = [];
 
+  bool pressed = false;
+
   @override
   void initState() {
     super.initState();
@@ -80,6 +82,10 @@ class _EditFacilitiesState extends State<EditFacilities> {
 
     var bodyEncoded = convert.json.encode(facilityMap(crid, availableFacilities));
 
+    setState(() {
+      pressed = true;
+    });
+
     // response: response of the POST request
     var response = await http.post(
       url,
@@ -104,7 +110,8 @@ class _EditFacilitiesState extends State<EditFacilities> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: _editFacility,
+            disabledColor: Colors.grey,
+            onPressed: pressed ? null : _editFacility,
           ),
         ],
       ),

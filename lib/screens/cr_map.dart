@@ -22,6 +22,8 @@ class _CRMapState extends State<CRMap> {
   var mapControl = MapController();
   var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
+  bool firstload = true;
+
   Position currPos = Position(
     latitude: 14.654918,
     longitude: 121.064688,
@@ -50,10 +52,13 @@ class _CRMapState extends State<CRMap> {
       print(position);
       setState(() {
         currPos = position;
-        mapControl.move(
-            LatLng(currPos.latitude, currPos.longitude),
-            17.5
-        );
+        if (firstload) {
+          mapControl.move(
+              LatLng(currPos.latitude, currPos.longitude),
+              18
+          );
+          firstload = false;
+        }
       });
     });
   }
@@ -62,7 +67,9 @@ class _CRMapState extends State<CRMap> {
     return FlutterMap(
       options: MapOptions(
           center: LatLng(currPos.latitude, currPos.longitude),
-          zoom: 17.5,
+          zoom: 18,
+          maxZoom: 19,
+          minZoom: 15,
           onTap: (value) => (print(value))
       ),
       layers: [
@@ -93,8 +100,6 @@ class _CRMapState extends State<CRMap> {
               anchorPos: AnchorPos.exactly(
                   Anchor(25, 0)
               ),
-              width: 50,
-              height: 50,
               point: LatLng(14.653538, 121.069832),
               builder: (ctx) =>
                   Container(
