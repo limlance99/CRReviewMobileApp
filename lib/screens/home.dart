@@ -110,6 +110,11 @@ class _HomeState extends State<Home> {
         return CRList(key: this.key, scrollControl: _scrollControl,);
         break;
       case 1:
+        if (_selected == 1) {
+          setState(() {
+            _show = true;
+          });
+        }
         return CRMap();
         break;
       default:
