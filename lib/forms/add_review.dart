@@ -10,6 +10,7 @@ Code History:
   Feb 13, 2020: JP Chanchico - Initialized File
 */
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'dart:convert' as convert;
@@ -145,7 +146,7 @@ class _AddReviewState extends State<AddReview> {
                             itemCount: 5,
                             itemBuilder: (context, _) => Icon(
                                 Icons.star,
-                                color: Colors.amber,
+                                color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating) {
                               rating1 = rating;
@@ -170,7 +171,7 @@ class _AddReviewState extends State<AddReview> {
                             itemCount: 5,
                             itemBuilder: (context, _) => Icon(
                                 Icons.star,
-                                color: Colors.amber,
+                                color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating){
                               rating2 = rating;
@@ -195,7 +196,7 @@ class _AddReviewState extends State<AddReview> {
                             itemCount: 5,
                             itemBuilder: (context, _) => Icon(
                                 Icons.star,
-                                color: Colors.amber,
+                                color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating){
                               rating3 = rating;
