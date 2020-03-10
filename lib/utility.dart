@@ -93,15 +93,15 @@ Widget genderIcon(gender) {
 
 Map<int, Color> colorSwatch() {
   Map<int, Color> color = {
-    50: Color.fromRGBO(15, 76, 129, .55),
-    100: Color.fromRGBO(15, 76, 129, .6),
-    200: Color.fromRGBO(15, 76, 129, .65),
-    300: Color.fromRGBO(15, 76, 129, .7),
-    400: Color.fromRGBO(15, 76, 129, .75),
-    500: Color.fromRGBO(15, 76, 129, .8),
-    600: Color.fromRGBO(15, 76, 129, .85),
-    700: Color.fromRGBO(15, 76, 129, .9),
-    800: Color.fromRGBO(15, 76, 129, .95),
+    50: Color.fromRGBO(15, 76, 129, .775),
+    100: Color.fromRGBO(15, 76, 129, .8),
+    200: Color.fromRGBO(15, 76, 129, .825),
+    300: Color.fromRGBO(15, 76, 129, .85),
+    400: Color.fromRGBO(15, 76, 129, .875),
+    500: Color.fromRGBO(15, 76, 129, .9),
+    600: Color.fromRGBO(15, 76, 129, .925),
+    700: Color.fromRGBO(15, 76, 129, .95),
+    800: Color.fromRGBO(15, 76, 129, .975),
     900: Color.fromRGBO(15, 76, 129, 1),
   };
   return color;

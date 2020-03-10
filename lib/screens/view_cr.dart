@@ -97,6 +97,7 @@ class _ViewCRState extends State<ViewCR> {
         setState(() {
           if (jsonResponse["reviews"] != null) {
             reviews = jsonResponse["reviews"];
+            _getAverageRatings();
           }
         });
     } else {
@@ -117,7 +118,7 @@ class _ViewCRState extends State<ViewCR> {
   }
 
   // _getAverageRatings: function to get the average for each of the 3 ratings
-  void _getAverageRatings() {
+  void _getAverageRatings() async {
     aveRating1 = 0;
     aveRating2 = 0;
     aveRating3 = 0;
@@ -146,7 +147,6 @@ class _ViewCRState extends State<ViewCR> {
 
     _getJSONData();
     _getCRFacilities();
-    _getAverageRatings();
   }
 
   // build: builds the screen.
@@ -165,12 +165,16 @@ class _ViewCRState extends State<ViewCR> {
           IconButton(
             icon: Icon(Icons.add_comment),
             onPressed: () async {
-              await Navigator.push(
+              bool result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddReview(crid: widget.cr["id"]),
                 )
               );
+              if (result) {
+                _getCRFacilities();
+                _getJSONData();
+              }
             },
             tooltip: "Add Review",
           ),
@@ -197,7 +201,6 @@ class _ViewCRState extends State<ViewCR> {
     setState(() {
         _getCRFacilities();
         _getJSONData();
-        _getAverageRatings();
       }
     );
     _refreshController.loadComplete();
@@ -208,7 +211,6 @@ class _ViewCRState extends State<ViewCR> {
     setState(() {
         _getCRFacilities();
         _getJSONData();
-        _getAverageRatings();
       }
     );
     _refreshController.refreshCompleted();
@@ -313,7 +315,7 @@ class _ViewCRState extends State<ViewCR> {
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: Colors.cyan,
                       ),
                       onRatingUpdate: (rating){},
                     ),
@@ -333,7 +335,7 @@ class _ViewCRState extends State<ViewCR> {
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: Colors.cyan,
                       ),
                       onRatingUpdate: (rating) {},
                     ),
@@ -353,7 +355,7 @@ class _ViewCRState extends State<ViewCR> {
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: Colors.cyan,
                       ),
                       onRatingUpdate: (rating) {},
                     ),
@@ -474,7 +476,7 @@ class _ViewCRState extends State<ViewCR> {
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
-                        color: Colors.amber,
+                        color: Colors.cyan,
                     ),
                     itemSize: 20.0,
                     onRatingUpdate: (rating) {},
@@ -494,7 +496,7 @@ class _ViewCRState extends State<ViewCR> {
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
-                        color: Colors.amber,
+                        color: Colors.cyan,
                     ),
                     itemSize: 20.0,
                     onRatingUpdate: (rating) {},
@@ -514,7 +516,7 @@ class _ViewCRState extends State<ViewCR> {
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
-                        color: Colors.amber,
+                        color: Colors.cyan,
                     ),
                     itemSize: 20.0,
                     onRatingUpdate: (rating) {},

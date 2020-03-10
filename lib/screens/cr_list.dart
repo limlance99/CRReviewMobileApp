@@ -20,9 +20,7 @@ import '../forms/add_cr.dart';
 import './view_cr.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../utility.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
-import 'package:geolocator/geolocator.dart';
+import 'cr_map.dart';
 
 // CRList: Stateful Widget that will contain all the logic and UI for the CR List screen.
 class CRList extends StatefulWidget {
@@ -43,51 +41,21 @@ class _CRListState extends State<CRList> {
   // data: list that will contain the CRs retrieved from the backend.
   List data = [];
   List locations = [];
-  Position position;
+
   int _selected = 0;
 
-  Future<void> getPosition() async {
-    position = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
-    );
-  }
   Widget pageChooser() {
     switch (this._selected) {
       case 0:
         return _refreshableList(data);
         break;
       case 1:
-        return FlutterMap(
-          options: MapOptions(
-            center: LatLng(position.latitude, position.longitude),
-            zoom: 18.0,
-          ),
-          layers: [
-            TileLayerOptions(
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-            ),
-            MarkerLayerOptions(
-              markers: [
-                Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: LatLng(position.latitude, position.longitude),
-                  builder: (ctx) =>
-                  Container(
-                    child: FlutterLogo(),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
+        return CRMap();
         break;
       default:
         return _refreshableList(data);
     }
   }
-
   // build: builds the screen.
   @override
   Widget build(BuildContext context) {
@@ -261,7 +229,6 @@ class _CRListState extends State<CRList> {
       // call get json data function
       this.getJSONData();
       this.getLocations();
-      this.getPosition();
     }
 
     // getJSONData: HTTP GET request to get the list of CRs from the database.
