@@ -24,7 +24,13 @@ import 'cr_map.dart';
 
 // CRList: Stateful Widget that will contain all the logic and UI for the CR List screen.
 class CRList extends StatefulWidget {
-  CRList({Key key}) : super(key: key);
+
+  final ScrollController scrollControl;
+
+  CRList({
+    Key key,
+    @required this.scrollControl,
+  }) : super(key: key);
 
   // title: Title of the screen.
 
@@ -37,6 +43,8 @@ class _CRListState extends State<CRList> {
   // _refreshController: controller for everything related to the pull-to-refresh widget
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  ScrollController _scrollControl;
 
   // data: list that will contain the CRs retrieved from the backend.
   List data = [];
@@ -60,11 +68,7 @@ class _CRListState extends State<CRList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CR Review'),
-        centerTitle: true,
-      ),
-      body: pageChooser(),
+      body: _refreshableList(data),
       backgroundColor: Colors.green[50],
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -80,27 +84,6 @@ class _CRListState extends State<CRList> {
 
         },
         child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
-            title: Text("Locations"),
-          ),
-          
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            title: Text("Map",)
-          ),
-        ],
-        currentIndex: _selected,
-        selectedItemColor: MaterialColor(0xFF0F4C81, colorSwatch()),
-        onTap: (index) {
-          setState(() {
-            this._selected = index;
-          });
-        },
       ),
     );
 
@@ -130,16 +113,16 @@ class _CRListState extends State<CRList> {
   //   data: list that should contain all the data to display. 
   Widget _buildListView(data) => ListView.builder(
     padding: EdgeInsets.all(16.0),
+    controller: _scrollControl,
     itemCount: locations.length,
     itemBuilder: (context, index) {
-      final _parentKey = GlobalKey();
-      return _buildImageColumn(locations[index], _parentKey);
+      return _buildImageColumn(locations[index]);
     },
   );
   
   // _buildImageColumn: Widget that deals with building each specific row of the list.
   //   item: the data to display for one specific column.
-  Widget _buildImageColumn(item, _parentKey) {
+  Widget _buildImageColumn(item) {
     List crs = [];
     for (var cr in data) {
       if (cr["location"]["address"] == item["address"]) {
@@ -158,7 +141,6 @@ class _CRListState extends State<CRList> {
       child: Column(
         children: <Widget>[
           Card(child: ExpansionTile(
-            key: _parentKey,
             title: Text(
               item["address"].toString(),
               style: TextStyle(
@@ -229,6 +211,7 @@ class _CRListState extends State<CRList> {
       // call get json data function
       this.getJSONData();
       this.getLocations();
+      _scrollControl = widget.scrollControl;
     }
 
     // getJSONData: HTTP GET request to get the list of CRs from the database.

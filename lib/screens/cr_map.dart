@@ -1,3 +1,13 @@
+/*
+Authors: JV Afable, JP Chanchico, Lance Lim
+This is a course requirement for CS 192 Software Engineering II
+under the supervision of Asst. Prof. Ma. Rowena C. Solamo of
+the Department of Computer Science, College of Engineering,
+University of the Philippines, Diliman for the AY 2019-2020.
+Code History:
+	Mar 10, 2020: JP Chanchico - Initialized file.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -36,15 +46,6 @@ class _CRMapState extends State<CRMap> {
   void initState() {
     super.initState();
     this._getLocation();
-  }
-
-  Future<void> _getPosition() async {
-    Position temp = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
-    );
-    setState(() {
-      currPos = temp;
-    });
   }
 
   void _getLocation() {

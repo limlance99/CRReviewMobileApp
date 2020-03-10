@@ -10,7 +10,7 @@ Code History:
 
 import 'package:flutter/material.dart';
 import 'utility.dart';
-import './screens/cr_list.dart';
+import './screens/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: MaterialColor(0xFF0F4C81, colorSwatch()),
         fontFamily: 'Inter',
       ),
-      home: CRList(),
+      home: Home(title: 'CR Review'),
     );
   }
 }
