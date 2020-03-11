@@ -235,7 +235,7 @@ class _CRListState extends State<CRList> with AutomaticKeepAliveClientMixin {
       var response = await http.get(url).timeout(
           Duration(seconds: 10),
           onTimeout: () {
-            showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+            showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, _onRefresh);
             print('timeout');
             return;
           }

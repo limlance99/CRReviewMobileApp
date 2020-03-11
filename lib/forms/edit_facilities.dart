@@ -47,7 +47,7 @@ class _EditFacilitiesState extends State<EditFacilities> {
     var response = await http.get(url).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, null);
           print('timeout');
           return;
         }
@@ -99,6 +99,13 @@ class _EditFacilitiesState extends State<EditFacilities> {
       url,
       headers: {"Content-Type": "application/json"},
       body: bodyEncoded,
+    ).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, null);
+          print('timeout');
+          return;
+        }
     );
     if (response.statusCode == 200) {
       Navigator.pop(context, true);

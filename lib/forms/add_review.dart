@@ -98,7 +98,7 @@ class _AddReviewState extends State<AddReview> {
     ).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, null);
           print('timeout');
           return;
         }

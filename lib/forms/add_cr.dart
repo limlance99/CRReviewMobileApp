@@ -68,7 +68,7 @@ class _AddCRState extends State<AddCR> {
     var response = await http.get(url).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, null);
           print('timeout');
           return;
         }
@@ -150,7 +150,7 @@ class _AddCRState extends State<AddCR> {
     ).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.timer_off, null);
           print('timeout');
           return;
         }

@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
         _source = source;
       });
       if (!_connected()) {
-        showOKBox('You are offline.', 'Please check your internet connection.', context, Icons.network_check, () {
+        showOKBox('You are offline.', 'Please check your internet connection.', context, Icons.offline_pin, () {
           print('OK is pressed');
         });
       }
