@@ -26,9 +26,9 @@ Code History:
 
         <b-table-column field="createdat" label="Date Created">{{ parseDate(props.row.createdat) }}</b-table-column>
 
-        <b-table-column field="rating1" label="Rating 1">{{ props.row.rating1 }}</b-table-column>
-        <b-table-column field="rating2" label="Rating 2">{{ props.row.rating2 }}</b-table-column>
-        <b-table-column field="rating3" label="Rating 3">{{ props.row.rating3 }}</b-table-column>
+        <b-table-column field="cleanliness" label="Cleanliness">{{ props.row.cleanliness }}</b-table-column>
+        <b-table-column field="comfort" label="Comfort">{{ props.row.comfort }}</b-table-column>
+        <b-table-column field="facilities" label="Facilities">{{ props.row.facilities }}</b-table-column>
 
         <b-table-column field="reviewtext" label="Review Text">{{ props.row.reviewtext }}</b-table-column>
         <b-table-column label="Delete">
