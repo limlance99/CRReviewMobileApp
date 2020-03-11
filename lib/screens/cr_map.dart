@@ -25,7 +25,7 @@ class CRMap extends StatefulWidget {
   _CRMapState createState() => _CRMapState();
 }
 
-class _CRMapState extends State<CRMap> {
+class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   String title = "";
 
   var geolocator = Geolocator();
@@ -65,6 +65,7 @@ class _CRMapState extends State<CRMap> {
   }
 
   Widget build(BuildContext context) {
+    super.build(context);
     return FlutterMap(
       options: MapOptions(
           center: LatLng(currPos.latitude, currPos.longitude),
@@ -118,6 +119,10 @@ class _CRMapState extends State<CRMap> {
       mapController: mapControl,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void dispose() {
     positionStream?.cancel();

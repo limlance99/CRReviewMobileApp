@@ -20,10 +20,9 @@ import '../forms/add_cr.dart';
 import './view_cr.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../utility.dart';
-import 'cr_map.dart';
 
 // CRList: Stateful Widget that will contain all the logic and UI for the CR List screen.
-class CRList extends StatefulWidget {
+class CRList extends StatefulWidget{
 
   final ScrollController scrollControl;
 
@@ -38,7 +37,7 @@ class CRList extends StatefulWidget {
   _CRListState createState() => _CRListState();
 }
 
-class _CRListState extends State<CRList> {
+class _CRListState extends State<CRList> with AutomaticKeepAliveClientMixin {
   
   // _refreshController: controller for everything related to the pull-to-refresh widget
   RefreshController _refreshController =
@@ -50,23 +49,11 @@ class _CRListState extends State<CRList> {
   List data = [];
   List locations = [];
 
-  int _selected = 0;
 
-  Widget pageChooser() {
-    switch (this._selected) {
-      case 0:
-        return _refreshableList(data);
-        break;
-      case 1:
-        return CRMap();
-        break;
-      default:
-        return _refreshableList(data);
-    }
-  }
   // build: builds the screen.
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: _refreshableList(data),
       backgroundColor: Colors.green[50],
@@ -256,4 +243,7 @@ class _CRListState extends State<CRList> {
         print("Request failed with status: ${response.statusCode}");
       }
     }
+
+    @override
+    bool get wantKeepAlive => true;
   }

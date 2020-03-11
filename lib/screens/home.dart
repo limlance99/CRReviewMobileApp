@@ -30,6 +30,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   ScrollController _scrollControl;
+  PageController _pageControl;
   bool _show;
   String title;
   int _selected;
@@ -41,6 +42,7 @@ class _HomeState extends State<Home> {
     super.initState();
     _show = true;
     _scrollControl = ScrollController();
+    _pageControl = PageController();
     title = widget.title;
     _selected = 0;
     key = GlobalKey();
@@ -71,11 +73,32 @@ class _HomeState extends State<Home> {
         title: Text(title),
         centerTitle: true,
       ),
-      body: pageChooser(),
+      body: GestureDetector(
+        onPanUpdate: (details) {
+          if (details.delta.dx < 0) {
+            print('swiping right');
+            setState(() {
+              _selected = 1;
+              _pageControl.animateToPage(_selected, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+            });
+          }
+        },
+        child: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageControl,
+          onPageChanged: (index) {
+            setState(() => _selected = index);
+          },
+          children: <Widget>[
+            CRList(key: this.key, scrollControl: _scrollControl,),
+            CRMap(),
+          ],
+        ),
+      ),
       backgroundColor: Colors.green[50],
       bottomNavigationBar: AnimatedContainer(
-        curve: Curves.easeOut,
-        duration: Duration(milliseconds: 400),
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 500),
         height: _show ? 56.0 : 0.0,
         child: Wrap(children: <Widget>[botNavBar()]),
       ),
@@ -99,6 +122,7 @@ class _HomeState extends State<Home> {
       onTap: (index) {
         setState(() {
           this._selected = index;
+          _pageControl.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
         });
       },
     );
@@ -121,4 +145,5 @@ class _HomeState extends State<Home> {
         return CRList(key: this.key, scrollControl: _scrollControl,);
     }
   }
+
 }
