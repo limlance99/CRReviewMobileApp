@@ -79,6 +79,7 @@ class _HomeState extends State<Home> {
             print('swiping right');
             setState(() {
               _selected = 1;
+              _show = true;
               _pageControl.animateToPage(_selected, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
             });
           }
@@ -90,7 +91,7 @@ class _HomeState extends State<Home> {
             setState(() => _selected = index);
           },
           children: <Widget>[
-            CRList(key: this.key, scrollControl: _scrollControl,),
+            CRList(scrollControl: _scrollControl,),
             CRMap(),
           ],
         ),
@@ -128,22 +129,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget pageChooser() {
-    switch (this._selected) {
-      case 0:
-        return CRList(key: this.key, scrollControl: _scrollControl,);
-        break;
-      case 1:
-        if (_selected == 1) {
-          setState(() {
-            _show = true;
-          });
-        }
-        return CRMap();
-        break;
-      default:
-        return CRList(key: this.key, scrollControl: _scrollControl,);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollControl.dispose();
   }
-
 }
