@@ -48,14 +48,14 @@ class _ViewCRState extends State<ViewCR> {
 
   List facilities = [];
 
-  // aveRating1: number variable that will contain the average rating for rating1 
-  num aveRating1 = 0.0;
+  // aveCleanliness: number variable that will contain the average rating for cleanliness 
+  num aveCleanliness = 0.0;
 
-  // aveRating2: number variable that will contain the average rating for rating2 
-  num aveRating2 = 0.0;
+  // aveComfort: number variable that will contain the average rating for comfort 
+  num aveComfort = 0.0;
 
-  // aveRating3: number variable that will contain the average rating for rating3 
-  num aveRating3 = 0.0;
+  // aveFacilities: number variable that will contain the average rating for facilities 
+  num aveFacilities = 0.0;
 
   Future<void> _getCRFacilities() async {
     var url = "https://crreviewapi.herokuapp.com/api/facilities/${widget.cr["id"]}";
@@ -119,24 +119,24 @@ class _ViewCRState extends State<ViewCR> {
 
   // _getAverageRatings: function to get the average for each of the 3 ratings
   void _getAverageRatings() async {
-    aveRating1 = 0;
-    aveRating2 = 0;
-    aveRating3 = 0;
+    aveCleanliness = 0;
+    aveComfort = 0;
+    aveFacilities = 0;
 
     for (int i = 0; i < reviews.length; i++) {
-      aveRating1 += reviews[i]["rating1"];
-      aveRating2 += reviews[i]["rating2"];
-      aveRating3 += reviews[i]["rating3"];
+      aveCleanliness += reviews[i]["cleanliness"];
+      aveComfort += reviews[i]["comfort"];
+      aveFacilities += reviews[i]["facilities"];
     }
 
-    aveRating1 = aveRating1 / reviews.length;
-    aveRating2 = aveRating2 / reviews.length;
-    aveRating3 = aveRating3 / reviews.length;
+    aveCleanliness = aveCleanliness / reviews.length;
+    aveComfort = aveComfort / reviews.length;
+    aveFacilities = aveFacilities / reviews.length;
 
     if (reviews.length == 0) {
-      aveRating1 = 5.0;
-      aveRating2 = 5.0;
-      aveRating3 = 5.0;
+      aveCleanliness = 5.0;
+      aveComfort = 5.0;
+      aveFacilities = 5.0;
     }
   }
 
@@ -303,15 +303,15 @@ class _ViewCRState extends State<ViewCR> {
                     Padding(
                       padding: EdgeInsets.all(16.0),
                     ),
-                  // Display rating bar of the average of Rating 1
+                  // Display rating bar of the average of Cleanliness
                     Text(
-                      "Rating 1",
+                      "Cleanliness",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating1.toDouble(),
+                      initialRating: aveCleanliness.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -323,15 +323,15 @@ class _ViewCRState extends State<ViewCR> {
                       padding: EdgeInsets.all(16.0),
                     ),
 
-                  // Display rating bar of the average of Rating 2
+                  // Display rating bar of the average of Comfort
                     Text(
-                      "Rating 2",
+                      "Comfort",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating2.toDouble(),
+                      initialRating: aveComfort.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -343,15 +343,15 @@ class _ViewCRState extends State<ViewCR> {
                       padding: EdgeInsets.all(16.0),
                     ),
 
-                  // Display rating bar of the average of Rating 3
+                  // Display rating bar of the average of Facilities
                     Text(
-                      "Rating 3",
+                      "Facilities",
                       style: Theme.of(context).textTheme.headline,
                     ),
                     RatingBar(
                       direction: Axis.horizontal,
                       ignoreGestures: true,
-                      initialRating: aveRating3.toDouble(),
+                      initialRating: aveFacilities.toDouble(),
                       itemCount: 5,
                       itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -465,14 +465,14 @@ class _ViewCRState extends State<ViewCR> {
               child: Column(
                 children: <Widget>[
 
-                // Display rating bar for Rating 1 of current review
+                // Display rating bar for Cleanliness of current review
                   Text(
-                    "Rating 1",
+                    "Cleanliness",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating1"].toDouble(),
+                    initialRating: reviews[i]["cleanliness"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
@@ -485,14 +485,14 @@ class _ViewCRState extends State<ViewCR> {
                     padding: EdgeInsets.all(3.0),
                   ),
 
-                // Display rating bar for Rating 2 of current review
+                // Display rating bar for Comfort of current review
                   Text(
-                    "Rating 2",
+                    "Comfort",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating2"].toDouble(),
+                    initialRating: reviews[i]["comfort"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,
@@ -505,14 +505,14 @@ class _ViewCRState extends State<ViewCR> {
                     padding: EdgeInsets.all(3.0),
                   ),
                 
-                // Display rating bar for Rating 3 of current review
+                // Display rating bar for Facilities of current review
                   Text(
-                    "Rating 3",
+                    "Facilities",
                   ),
                   RatingBar(
                     direction: Axis.horizontal,
                     ignoreGestures: true,
-                    initialRating: reviews[i]["rating3"].toDouble(),
+                    initialRating: reviews[i]["facilities"].toDouble(),
                     itemCount: 5,
                     itemBuilder: (context, _) => Icon(
                         Icons.star,

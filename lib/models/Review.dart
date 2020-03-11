@@ -17,19 +17,19 @@ import 'package:json_annotation/json_annotation.dart';
 class Review {
   int crid;
   String reviewText;
-  double rating1;
-  double rating2;
-  double rating3;
+  double cleanliness;
+  double comfort;
+  double facilities;
 
-  Review(this.crid, this.reviewText, this.rating1, this.rating2, this.rating3);
+  Review(this.crid, this.reviewText, this.cleanliness, this.comfort, this.facilities);
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
       json['crid'],
       json['reviewtext'],
-      json['rating1'],
-      json['rating2'],
-      json['rating3'],
+      json['cleanliness'],
+      json['comfort'],
+      json['facilities'],
     );
   }
 
@@ -39,9 +39,9 @@ class Review {
     var map = new Map<String, dynamic>();
     map["crid"] = crid;
     map["reviewtext"] = reviewText;
-    map["rating1"] = rating1.toInt();
-    map["rating2"] = rating2.toInt();
-    map["rating3"] = rating3.toInt();
+    map["cleanliness"] = cleanliness.toInt();
+    map["comfort"] = comfort.toInt();
+    map["facilities"] = facilities.toInt();
 
     return map;
   }

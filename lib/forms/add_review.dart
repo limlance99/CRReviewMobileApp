@@ -36,14 +36,14 @@ class _AddReviewState extends State<AddReview> {
   // crid: will contain the ID of the CR being reviewed
   int crid = 0;
 
-  // rating1: will contain the value of the first rating of the review
-  double rating1 = 0;
+  // cleanliness: will contain the value of the cleanliness of the review
+  double cleanliness = 0;
 
-  // rating2: will contain the value of the second rating of the review
-  double rating2 = 0;
+  // comfort: will contain the value of the comfort of the review
+  double comfort = 0;
   
-  // rating3: will contain the value of the third rating of the review
-  double rating3 = 0;
+  // facilities: will contain the value of the facilities of the review
+  double facilities = 0;
 
   // reviewText: will contain the inputted text of the review
   String reviewText = "";
@@ -65,12 +65,12 @@ class _AddReviewState extends State<AddReview> {
   Future<void> _addNewReview() async {
     reviewText = _reviewTextController.text;
 
-    print(rating1);
-    print(rating2);
-    print(rating3);
+    print(cleanliness);
+    print(comfort);
+    print(facilities);
     print("'" + reviewText + "'");
 
-    if (rating1 == 0 || rating2 == 0 || rating3 == 0) {
+    if (cleanliness == 0 || comfort == 0 || facilities == 0) {
       print("Missing Ratings");
       return;
     }
@@ -80,7 +80,7 @@ class _AddReviewState extends State<AddReview> {
     var url = 'https://crreviewapi.herokuapp.com/api/reviews';
 
     // newReview: A new Review class instantiated with all of the values, then turning it into a map (key:value).
-    var newReview = new Review(crid, reviewText, rating1, rating2, rating3).toMap();
+    var newReview = new Review(crid, reviewText, cleanliness, comfort, facilities).toMap();
 
     // bodyEncoded: converts the newCR into a JSON encoded map.
     var bodyEncoded = convert.json.encode(newReview);
@@ -140,9 +140,9 @@ class _AddReviewState extends State<AddReview> {
                       width: 500.0,
                       child: Column(
                         children: <Widget>[
-                        // Display rating bar for Rating 1
+                        // Display rating bar for cleanliness
                           Text(
-                            "Rating 1",
+                            "Cleanliness",
                             style: Theme.of(context).textTheme.headline,
                           ),
                           Divider(),
@@ -156,7 +156,7 @@ class _AddReviewState extends State<AddReview> {
                                 color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating) {
-                              rating1 = rating;
+                              cleanliness = rating;
                             },
                           ),
                           Divider(
@@ -165,9 +165,9 @@ class _AddReviewState extends State<AddReview> {
                           ),
                           Padding(padding: EdgeInsets.all(15)),
 
-                        // Display rating bar for Rating 2
+                        // Display rating bar for Comfort
                           Text(
-                            "Rating 2",
+                            "Comfort",
                             style: Theme.of(context).textTheme.headline,
                           ),
                           Divider(),
@@ -181,7 +181,7 @@ class _AddReviewState extends State<AddReview> {
                                 color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating){
-                              rating2 = rating;
+                              comfort = rating;
                             },
                           ),
                           Divider(
@@ -190,9 +190,9 @@ class _AddReviewState extends State<AddReview> {
                           ),
                           Padding(padding: EdgeInsets.all(15)),
 
-                        // Display rating bar for Rating 3
+                        // Display rating bar for Facilities
                           Text(
-                            "Rating 3",
+                            "Facilities",
                             style: Theme.of(context).textTheme.headline,
                           ),
                           Divider(),
@@ -206,7 +206,7 @@ class _AddReviewState extends State<AddReview> {
                                 color: Colors.cyan,
                             ),
                             onRatingUpdate: (rating){
-                              rating3 = rating;
+                              facilities = rating;
                             },
                           ),
                           Divider(
