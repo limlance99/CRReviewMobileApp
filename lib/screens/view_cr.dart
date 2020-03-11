@@ -85,7 +85,14 @@ class _ViewCRState extends State<ViewCR> {
     var url = "https://crreviewapi.herokuapp.com/api/reviews/${widget.cr["id"]}";
 
     // response: response of the GET request
-    var response = await http.get(url);
+    var response = await http.get(url).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          print('timeout');
+          return;
+        }
+    );
 
     reviews = [];
     if (response.statusCode == 200) {

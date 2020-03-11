@@ -8,6 +8,7 @@ Code History:
 	Mar 11, 2020: JP Chanchico - Initialized file.
 */
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../utility.dart';
@@ -31,6 +32,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   ScrollController _scrollControl;
   PageController _pageControl;
+
+  Connection _connection;
+  Map _source;
+
   bool _show;
   String title;
   int _selected;
@@ -45,6 +50,21 @@ class _HomeState extends State<Home> {
     _pageControl = PageController();
     title = widget.title;
     _selected = 0;
+    _source = {ConnectivityResult.none: false};
+    _connection = Connection.instance;
+
+    _connection.init();
+    _connection.stream.listen((source) {
+      setState(() {
+        _source = source;
+      });
+      if (!_connected()) {
+        showOKBox('You are offline.', 'Please check your internet connection.', context, Icons.network_check, () {
+          print('OK is pressed');
+        });
+      }
+    });
+
     key = GlobalKey();
 
     _scrollControl.addListener(() {
@@ -98,7 +118,7 @@ class _HomeState extends State<Home> {
       ),
       backgroundColor: Colors.green[50],
       bottomNavigationBar: AnimatedContainer(
-        curve: Curves.easeIn,
+        curve: Curves.decelerate,
         duration: Duration(milliseconds: 500),
         height: _show ? 56.0 : 0.0,
         child: Wrap(children: <Widget>[botNavBar()]),
@@ -129,9 +149,25 @@ class _HomeState extends State<Home> {
     );
   }
 
+  bool _connected() {
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        return false;
+        break;
+      case ConnectivityResult.mobile:
+        return true;
+        break;
+      case ConnectivityResult.wifi:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _connection.closeStream();
     _scrollControl.dispose();
   }
 }

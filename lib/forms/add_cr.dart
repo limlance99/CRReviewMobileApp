@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import '../models/CR.dart';
+import '../utility.dart';
 
 // AddCR: Stateful Widget that will contains the states for the Add CR form.
 class AddCR extends StatefulWidget {
@@ -64,7 +65,14 @@ class _AddCRState extends State<AddCR> {
     var url = 'https://crreviewapi.herokuapp.com/api/locations';
 
     // response: response of the GET request
-    var response = await http.get(url);
+    var response = await http.get(url).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          print('timeout');
+          return;
+        }
+    );
 
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
@@ -139,7 +147,15 @@ class _AddCRState extends State<AddCR> {
       url,
       headers: {"Content-Type": "application/json"},
       body: bodyEncoded,
+    ).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          print('timeout');
+          return;
+        }
     );
+
     if (response.statusCode == 200) {
       Navigator.pop(context, true);
     }

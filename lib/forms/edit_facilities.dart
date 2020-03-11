@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import '../utility.dart';
 
 
 class EditFacilities extends StatefulWidget {
@@ -43,7 +44,14 @@ class _EditFacilitiesState extends State<EditFacilities> {
     var url = 'https://crreviewapi.herokuapp.com/api/facilities';
 
     // response: response of the GET request
-    var response = await http.get(url);
+    var response = await http.get(url).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          print('timeout');
+          return;
+        }
+    );
 
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);

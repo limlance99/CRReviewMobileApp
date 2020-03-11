@@ -10,6 +10,9 @@ Code History:
 */
 
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:connectivity/connectivity.dart';
 
 // _floorOfCR: Widget that handles string logic to display the proper floor of the CR.
 // ex. 2 => 2nd Floor.
@@ -105,4 +108,102 @@ Map<int, Color> colorSwatch() {
     900: Color.fromRGBO(15, 76, 129, 1),
   };
   return color;
+}
+
+void showOKBox(String title, String content, BuildContext context, IconData icons, Function onpress) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Row(
+          children: <Widget>[
+            icons == null ? Container(width: 0,) : Icon(
+              icons,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          content,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'OK',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {
+              if (onpress != null) {
+                onpress();
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+        backgroundColor: Color(0xFF00B7C3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+      );
+    }
+  );
+}
+
+class Connection {
+  Connection._internal();
+
+  static final Connection _instance = Connection._internal();
+
+  static Connection get instance => _instance;
+
+  Connectivity connectivity = Connectivity();
+
+  StreamController controller = StreamController.broadcast();
+
+  Stream get stream => controller.stream;
+
+  void init() async {
+    ConnectivityResult result = await connectivity.checkConnectivity();
+    checkStatus(result);
+    connectivity.onConnectivityChanged.listen((result) {
+      checkStatus(result);
+    });
+  }
+
+  void checkStatus(ConnectivityResult result) async {
+    bool _online = false;
+
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        _online = true;
+      } else
+        _online = false;
+    } on SocketException catch (_) {
+      _online = false;
+    }
+    controller.sink.add({result: _online});
+  }
+
+  void closeStream() {
+    controller.close();
+  }
 }

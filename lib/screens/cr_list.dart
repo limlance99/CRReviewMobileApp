@@ -87,6 +87,7 @@ class _CRListState extends State<CRList> with AutomaticKeepAliveClientMixin {
 
   // _onRefresh: what to do when then the widget refreshes.
   void _onRefresh() async {
+    print('refreshing');
     setState(() {
       getJSONData();
       getLocations();
@@ -231,7 +232,14 @@ class _CRListState extends State<CRList> with AutomaticKeepAliveClientMixin {
       var url = 'https://crreviewapi.herokuapp.com/api/locations';
 
       // response: response of the GET request
-      var response = await http.get(url);
+      var response = await http.get(url).timeout(
+          Duration(seconds: 10),
+          onTimeout: () {
+            showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+            print('timeout');
+            return;
+          }
+      );
 
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body);

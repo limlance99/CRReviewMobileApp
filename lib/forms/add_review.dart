@@ -16,6 +16,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import '../models/Review.dart';
+import '../utility.dart';
 
 // AddReview: Stateful Widget that will contain the states for the Add Review form.
 class AddReview extends StatefulWidget {
@@ -94,6 +95,13 @@ class _AddReviewState extends State<AddReview> {
       url,
       headers: {"Content-Type": "application/json"},
       body: bodyEncoded,
+    ).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          showOKBox('Request timed out.', 'Check your internet connection.', context, Icons.offline_pin, null);
+          print('timeout');
+          return;
+        }
     );
     if (response.statusCode == 200) {
       print("Successfully Added!");

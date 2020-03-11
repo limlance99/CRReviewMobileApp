@@ -125,6 +125,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
 
   @override
   void dispose() {
+    print('*disposed');
     positionStream?.cancel();
     super.dispose();
   }
