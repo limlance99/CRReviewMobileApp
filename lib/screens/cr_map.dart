@@ -16,7 +16,7 @@ import '../utility.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-import 'location.dart';
+import 'view_cr.dart';
 
 class CRMap extends StatefulWidget {
   CRMap({
@@ -38,7 +38,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   var mapControl = MapController();
   var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
-  Widget locationToload;
+  List data = [];
 
   var currMarker;
 
@@ -56,6 +56,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   void initState() {
     super.initState();
     this.getLocations();
+    this.getJSONData();
   }
 
   void getMarkers() {
@@ -67,7 +68,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
         ),
         width: 50,
         height: 50,
-        point: LatLng(14.654918, 121.064688),
+        point: LatLng(currPos.latitude, currPos.longitude),
         builder: (ctx) =>
             Container(
               key: Key('blue'),
@@ -99,7 +100,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
               ),
               onPressed: () {
                 setState(() {
-                  locationToload = Location(location: location,);
+                  currMarker = location;
                   _show = true;
                 });
               },
@@ -131,8 +132,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
       if (mounted)
         setState(() {
           locations = jsonResponse;
-          //_getLocation();
-          getMarkers();
+          _getLocation();
         });
     } else {
       print("Request failed with status: ${response.statusCode}");
@@ -147,13 +147,77 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
         if (firstload) {
           mapControl.move(
               LatLng(currPos.latitude, currPos.longitude),
+              //LatLng(14.654918, 121.064688),
               18
           );
+          getMarkers();
           firstload = false;
         }
-        getMarkers();
       });
     });
+  }
+
+  Widget buildLocation(location) {
+    List crs = [];
+    for (var cr in data) {
+      if (cr["location"]["address"] == location["address"]) {
+        crs.add(cr);
+      }
+    }
+
+
+    return ListView(
+      children: <Widget>[
+        Column(
+          children: buildCRList(crs),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> buildCRList(crs) {
+    List<Widget> ret = [];
+    if (crs.length == 0) {
+      ret.add(
+          ListTile(
+            title: Text(
+              'No available CRs.',
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          )
+      );
+    }
+    for (var i = 0; i < crs.length; i++) {
+      ret.add(
+          ListTile(
+              title: floorOfCR(crs[i]["floor"]),
+              trailing: genderIcon(crs[i]["gender"]),
+              onTap: () async {
+                bool result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewCR(title: "View CR", cr: crs[i]),
+                    )
+                );
+                if (result) {
+                  getJSONData();
+                }
+              }
+          )
+      );
+      if (i != crs.length - 1) {
+        ret.add(Divider(
+          indent: 20.0,
+          endIndent: 20.0,
+          thickness: 1.0,
+        ));
+      }
+    }
+
+    return ret;
   }
 
   Widget build(BuildContext context) {
@@ -169,7 +233,6 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
               onTap: (value) {
                 print(value);
                 setState(() {
-                  locationToload = null;
                   _show = false;
                 });
               },
@@ -188,11 +251,31 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
         Align(
           alignment: Alignment.bottomLeft,
           child: AnimatedContainer(
-            curve: Curves.decelerate,
-            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            duration: Duration(milliseconds: 300),
             height: _show ? 200.0 : 0.0,
             child: Container(
-              child: locationToload,
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  title: currMarker == null ? Text("") : Text(
+                    currMarker["address"],
+                    style: TextStyle(
+                      color: MaterialColor(0xFF0F4C81, colorSwatch()),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.pin_drop,
+                    size: 35,
+                    color: MaterialColor(0xFF0F4C81, colorSwatch()),
+                  ),
+                ),
+                body: currMarker == null ? null : buildLocation(currMarker),
+                backgroundColor: Colors.white,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -210,7 +293,8 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
               ),
               height: 200.0,
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(8),
+              margin: EdgeInsets.all(6),
             ),
           ),
         ),
@@ -219,7 +303,28 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   }
 
 
+  Future<void> getJSONData() async {
 
+    // url: the address that will be used to get the data.
+    var url = 'https://crreviewapi.herokuapp.com/api/crs';
+
+    // response: response of the GET request
+    var response  = await http.get(url);
+    print(response);
+    if (response.statusCode == 200) {
+
+      // jsonResponse: response body decoded from json
+      var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
+      if (mounted)
+        setState(() {
+          data = jsonResponse;
+        });
+    } else {
+      print("Request failed with status: ${response.statusCode}");
+    }
+    print("Get JSON got called");
+  }
 
   @override
   bool get wantKeepAlive => true;
