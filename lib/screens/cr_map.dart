@@ -21,9 +21,12 @@ import 'view_cr.dart';
 class CRMap extends StatefulWidget {
   final mapControl;
   final Function func;
+  final Stream changeStream;
+
   CRMap({
     Key key,
     this.func,
+    this.changeStream,
     @required this.mapControl,
   }) : super(key: key);
 
@@ -37,6 +40,8 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   List<Marker> markers = [];
   List locations = [];
   bool _show = false;
+
+  StreamSubscription changeSubscription;
 
   var geolocator = Geolocator();
   var mapControl;
@@ -60,6 +65,11 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   void initState() {
     super.initState();
     mapControl = widget.mapControl;
+    changeSubscription = widget.changeStream.listen((_) {
+      setState(() {
+        this.getJSONData();
+      });
+    });
     this.getLocations();
     this.getJSONData();
   }
@@ -356,6 +366,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   void dispose() {
     print('*disposed');
     positionStream?.cancel();
+    changeSubscription.cancel();
     super.dispose();
   }
 }

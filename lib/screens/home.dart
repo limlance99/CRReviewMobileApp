@@ -17,6 +17,7 @@ import 'cr_map.dart';
 import 'cr_list.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 
 class Home extends StatefulWidget {
   final String title;
@@ -37,6 +38,8 @@ class _HomeState extends State<Home> {
   PageController _pageControl;
   MapController _mapControl;
 
+  StreamController changeTrigger;
+
   Connection _connection;
   Map _source;
 
@@ -55,6 +58,8 @@ class _HomeState extends State<Home> {
     _scrollControl = ScrollController();
     _pageControl = PageController();
     _mapControl = MapController();
+
+    changeTrigger = StreamController.broadcast();
 
     currPos = Position(
       latitude: 14.654918,
@@ -159,8 +164,8 @@ class _HomeState extends State<Home> {
             setState(() => _selected = index);
           },
           children: <Widget>[
-            CRList(scrollControl: _scrollControl,),
-            CRMap(func: getPos, mapControl: _mapControl,),
+            CRList(func: addNotif, scrollControl: _scrollControl,),
+            CRMap(func: getPos, changeStream: changeTrigger.stream, mapControl: _mapControl,),
           ],
         ),
       ),
@@ -217,7 +222,13 @@ class _HomeState extends State<Home> {
     super.dispose();
     _connection.closeStream();
     _scrollControl.dispose();
+    changeTrigger.close();
   }
 
   getPos(value) => setState(() => currPos = value);
+  addNotif(value) {
+    if (value) {
+      changeTrigger.sink.add(null);
+    }
+  }
 }

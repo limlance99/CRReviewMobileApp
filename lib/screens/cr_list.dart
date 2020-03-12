@@ -25,9 +25,11 @@ import '../utility.dart';
 class CRList extends StatefulWidget{
 
   final ScrollController scrollControl;
+  final Function func;
 
   CRList({
     Key key,
+    this.func,
     @required this.scrollControl,
   }) : super(key: key);
 
@@ -67,6 +69,7 @@ class _CRListState extends State<CRList> with AutomaticKeepAliveClientMixin {
           );
           if (result) {
             getJSONData();
+            widget.func(true);
           }
 
         },
