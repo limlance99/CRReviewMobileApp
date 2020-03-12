@@ -156,6 +156,19 @@ class _ViewCRState extends State<ViewCR> {
     _getCRFacilities();
   }
 
+  // Navigates to the Add Review form
+  void gotoAddReview() async {
+    bool result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddReview(crid: widget.cr["id"]),
+      )
+    );
+    if (result) {
+      _getCRFacilities();
+      _getJSONData();
+    }
+  }
   // build: builds the screen.
   @override
   Widget build(BuildContext context) {
@@ -164,28 +177,10 @@ class _ViewCRState extends State<ViewCR> {
       appBar: AppBar(
         title: Text(widget.title),
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context, false),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add_comment),
-            onPressed: () async {
-              bool result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddReview(crid: widget.cr["id"]),
-                )
-              );
-              if (result) {
-                _getCRFacilities();
-                _getJSONData();
-              }
-            },
-            tooltip: "Add Review",
-          ),
-        ],
       ),
       body: _loadReviews(),
     );
@@ -285,7 +280,7 @@ class _ViewCRState extends State<ViewCR> {
   // reviews: list that should contain the kjbDFSLKJfsdLKhcasklcmhbreviews to display
   Widget _buildListView(reviews) {
     return ListView.builder(
-      padding: EdgeInsets.all(16.0),
+      // padding: EdgeInsets.all(16.0),
       itemCount: 4,
       itemBuilder: (context, i) {
         if (i == 0) {
@@ -293,7 +288,7 @@ class _ViewCRState extends State<ViewCR> {
             decoration: BoxDecoration(
               color: Colors.white,
             ),
-            margin: EdgeInsets.all(6),
+            margin: EdgeInsets.only(bottom: 16.0),
             child: Center(
               child: Column(
                 children: <Widget>[
@@ -379,7 +374,7 @@ class _ViewCRState extends State<ViewCR> {
             decoration: BoxDecoration(
               color: Colors.white,
             ),
-            margin: EdgeInsets.all(6),
+            margin: EdgeInsets.symmetric(vertical: 12),
             padding: EdgeInsets.all(6),
             child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -402,13 +397,14 @@ class _ViewCRState extends State<ViewCR> {
             ),
           );
         }
+
       // Logic for building review list
         if (i == 2) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
             ),
-            margin: EdgeInsets.all(6),
+            margin: EdgeInsets.symmetric(vertical: 6),
             padding: EdgeInsets.all(6),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -416,10 +412,30 @@ class _ViewCRState extends State<ViewCR> {
                 Padding(
                   padding: EdgeInsets.all(6.0),
                 ),
-                Text(
-                  "REVIEWS",
-                  style: Theme.of(context).textTheme.headline,
+                Row(
+                  children: <Widget> [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                    ),
+                    Text(
+                      "REVIEWS",
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.0),
+                    ),
+                    FlatButton(
+                      color: Colors.green,
+                      onPressed: gotoAddReview, 
+                      child: Text(
+                        "Give a Review",
+                        style: TextStyle(color: Colors.white)
+                      )
+                    ),
+                  ]
                 ),
+                
+                
                 Padding(
                   padding: EdgeInsets.all(6.0),
                 ),
@@ -432,6 +448,7 @@ class _ViewCRState extends State<ViewCR> {
 
 
         }
+
         return Container();
       },
     );
