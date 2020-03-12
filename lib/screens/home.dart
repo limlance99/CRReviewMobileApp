@@ -106,27 +106,27 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(title),
         centerTitle: true,
-        actions: _selected == 1 ? [
-          Container(
-            child: FlatButton(
-              child: Image.asset(
-                'assets/images/oble.png',
-                height: 45,
-                width: 45,
-              ),
-              onPressed: () {
-                print('up logo pressed!');
-                _mapControl.move(
-                    LatLng(14.654918, 121.064688),
-                    18.0
-                );
-              },
-              padding: EdgeInsets.all(0),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
+        leading: _selected != 1 ? null : Container(
+          child: FlatButton(
+            child: Image.asset(
+              'assets/images/oble.png',
+              height: 45,
+              width: 45,
             ),
-            width: 45,
+            onPressed: () {
+              print('up logo pressed!');
+              _mapControl.move(
+                  LatLng(14.654918, 121.064688),
+                  18.0
+              );
+            },
+            padding: EdgeInsets.all(0),
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
           ),
+          width: 45,
+        ),
+        actions: _selected == 1 ? [
           IconButton(
             icon: Icon(
                 Icons.not_listed_location

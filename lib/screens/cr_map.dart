@@ -90,7 +90,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
       markers.add(
         Marker(
           anchorPos: AnchorPos.exactly(
-              Anchor(25, 0)
+              Anchor(25, 5)
           ),
           width: 50,
           height: 50,
@@ -159,6 +159,23 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
           getMarkers();
           firstload = false;
         }
+        markers[0] = Marker(
+          anchorPos: AnchorPos.exactly(
+              Anchor(25, 5)
+          ),
+          width: 50,
+          height: 50,
+          point: LatLng(currPos.latitude, currPos.longitude),
+          builder: (ctx) =>
+              Container(
+                key: Key('blue'),
+                child: Icon(
+                  Icons.location_on,
+                  color: MaterialColor(0xFF0F4C81, colorSwatch()),
+                  size: 50.0,
+                ),
+              ),
+        );
       });
     });
   }
