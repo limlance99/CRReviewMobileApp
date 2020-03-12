@@ -20,6 +20,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../forms/add_review.dart';
 import '../forms/edit_facilities.dart';
+import 'package:flutter_parallax/flutter_parallax.dart';
 
 // ViewCR: Stateful Widget that will contain all the logic and UI for the View CR screen
 class ViewCR extends StatefulWidget {
@@ -36,6 +37,7 @@ class ViewCR extends StatefulWidget {
 }
 
 class _ViewCRState extends State<ViewCR> {
+  ScrollController _scrollController;
 
 // _refreshController: controller for everything related to the pull-to-refresh widget
   RefreshController _refreshController =
@@ -151,9 +153,11 @@ class _ViewCRState extends State<ViewCR> {
   @override
   void initState() {
     super.initState();
-
     _getJSONData();
     _getCRFacilities();
+    _scrollController = ScrollController();
+    print("This is the scroll_controller");
+    print(_scrollController);
   }
 
   // Navigates to the Add Review form
@@ -182,7 +186,66 @@ class _ViewCRState extends State<ViewCR> {
         ),
         centerTitle: true,
       ),
-      body: _loadReviews(),
+      body: Stack(children: <Widget> [
+          Parallax.outside(
+            controller: _scrollController,
+            child: Column(
+              children: <Widget> [
+                Image.asset("assets/images/cr_placeholder.png"),
+                Container(
+                  color: Colors.green[50],
+                  height: 200.0
+                ),
+                Container(
+                  color: Colors.green[51],
+                  height: 200.0
+                ),
+                Container(
+                  color: Colors.green[52],
+                  height: 200.0
+                ),
+                Container(
+                  color: Colors.green[53],
+                  height: 200.0
+                ),
+                Container(
+                  color: Colors.green[54],
+                  height: 200.0
+                ),
+                Container(
+                  color: Colors.green[55],
+                  height: 200.0
+                ),
+                // Container(
+                //   color: Colors.green[56],
+                //   height: 200.0
+                // ),
+                // Container(
+                //   color: Colors.green[57],
+                //   height: 200.0
+                // ),
+                // Container(
+                //   color: Colors.green[58],
+                //   height: 200.0
+                // ),
+                // Container(
+                //   color: Colors.green[59],
+                //   height: 200.0
+                // ),
+                // Container(
+                //   color: Colors.green[60],
+                //   height: 200.0
+                // ),
+
+              ]
+            ),
+          ),
+          // Positioned.fill(child: Image.asset(".../assets/images/cr_placeholder.jpg")),
+          
+          _loadReviews(),
+        ]
+      ), 
+      // body: _loadReviews(),     
     );
   }
 
@@ -190,11 +253,12 @@ class _ViewCRState extends State<ViewCR> {
   Widget _loadReviews() {
     return SmartRefresher(
       enablePullUp: true,
+      enablePullDown: false,
       controller: _refreshController,
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       child: _buildListView(reviews),
-
+      header: WaterDropHeader(),
     );
   }
 
@@ -281,9 +345,21 @@ class _ViewCRState extends State<ViewCR> {
   Widget _buildListView(reviews) {
     return ListView.builder(
       // padding: EdgeInsets.all(16.0),
+      controller: _scrollController,
       itemCount: 4,
       itemBuilder: (context, i) {
+        // if (i == 0) {
+        //   return Parallax.inside(
+        //     child: Image.asset("assets/images/cr_placeholder.png"),
+        //     mainAxisExtent: 175.0,
+        //   );
+        // }
         if (i == 0) {
+          return Container(
+            height: 200.0,
+          );
+        }
+        if (i == 1) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -369,7 +445,7 @@ class _ViewCRState extends State<ViewCR> {
             )
           );
         }
-        if (i == 1) {
+        if (i == 2) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -399,7 +475,7 @@ class _ViewCRState extends State<ViewCR> {
         }
 
       // Logic for building review list
-        if (i == 2) {
+        if (i == 3) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
