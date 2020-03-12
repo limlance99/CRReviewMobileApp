@@ -11,9 +11,12 @@ Code History:
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:latlong/latlong.dart';
 import '../utility.dart';
 import 'cr_map.dart';
 import 'cr_list.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
   final String title;
@@ -32,6 +35,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   ScrollController _scrollControl;
   PageController _pageControl;
+  MapController _mapControl;
 
   Connection _connection;
   Map _source;
@@ -42,12 +46,21 @@ class _HomeState extends State<Home> {
 
   GlobalKey key;
 
+  Position currPos;
+
   @override
   void initState() {
     super.initState();
     _show = true;
     _scrollControl = ScrollController();
     _pageControl = PageController();
+    _mapControl = MapController();
+
+    currPos = Position(
+      latitude: 14.654918,
+      longitude: 121.064688,
+    );
+
     title = widget.title;
     _selected = 0;
     _source = {ConnectivityResult.none: false};
@@ -88,10 +101,45 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
         centerTitle: true,
+        actions: _selected == 1 ? [
+          Container(
+            child: FlatButton(
+              child: Image.asset(
+                'assets/images/oble.png',
+                height: 45,
+                width: 45,
+              ),
+              onPressed: () {
+                print('up logo pressed!');
+                _mapControl.move(
+                    LatLng(14.654918, 121.064688),
+                    18.0
+                );
+              },
+              padding: EdgeInsets.all(0),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+            ),
+            width: 45,
+          ),
+          IconButton(
+            icon: Icon(
+                Icons.not_listed_location
+            ),
+            iconSize: 30,
+            onPressed: () {
+              _mapControl.move(
+                  LatLng(currPos.latitude, currPos.longitude),
+                  18.0
+              );
+            },
+          )
+        ] : [],
       ),
       body: GestureDetector(
         onPanUpdate: (details) {
@@ -112,7 +160,7 @@ class _HomeState extends State<Home> {
           },
           children: <Widget>[
             CRList(scrollControl: _scrollControl,),
-            CRMap(),
+            CRMap(func: getPos, mapControl: _mapControl,),
           ],
         ),
       ),
@@ -170,4 +218,6 @@ class _HomeState extends State<Home> {
     _connection.closeStream();
     _scrollControl.dispose();
   }
+
+  getPos(value) => setState(() => currPos = value);
 }

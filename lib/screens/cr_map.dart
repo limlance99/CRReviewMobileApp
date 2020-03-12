@@ -19,8 +19,12 @@ import 'dart:convert' as convert;
 import 'view_cr.dart';
 
 class CRMap extends StatefulWidget {
+  final mapControl;
+  final Function func;
   CRMap({
-    Key key
+    Key key,
+    this.func,
+    @required this.mapControl,
   }) : super(key: key);
 
   @override
@@ -35,7 +39,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   bool _show = false;
 
   var geolocator = Geolocator();
-  var mapControl = MapController();
+  var mapControl;
   var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
   List data = [];
@@ -55,6 +59,7 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
+    mapControl = widget.mapControl;
     this.getLocations();
     this.getJSONData();
   }
@@ -144,11 +149,12 @@ class _CRMapState extends State<CRMap> with AutomaticKeepAliveClientMixin {
       print(position);
       setState(() {
         currPos = position;
+        widget.func(currPos);
         if (firstload) {
           mapControl.move(
               LatLng(currPos.latitude, currPos.longitude),
               //LatLng(14.654918, 121.064688),
-              18
+              18.0
           );
           getMarkers();
           firstload = false;
