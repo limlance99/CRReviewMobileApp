@@ -44,7 +44,7 @@ class _ViewCRState extends State<ViewCR> {
     RefreshController(initialRefresh: false);
 
   // List reviews = cr["reviews"];
-
+  var top = 0.0;
   // reviews: list that will contain the reviews retrieved from the backend
   List reviews = [];
 
@@ -186,64 +186,27 @@ class _ViewCRState extends State<ViewCR> {
         ),
         centerTitle: true,
       ),
-      body: Stack(children: <Widget> [
-          Parallax.outside(
-            controller: _scrollController,
-            child: Column(
-              children: <Widget> [
-                Image.asset("assets/images/cr_placeholder.png"),
-                Container(
-                  color: Colors.green[50],
-                  height: 200.0
-                ),
-                Container(
-                  color: Colors.green[51],
-                  height: 200.0
-                ),
-                Container(
-                  color: Colors.green[52],
-                  height: 200.0
-                ),
-                Container(
-                  color: Colors.green[53],
-                  height: 200.0
-                ),
-                Container(
-                  color: Colors.green[54],
-                  height: 200.0
-                ),
-                Container(
-                  color: Colors.green[55],
-                  height: 200.0
-                ),
-                // Container(
-                //   color: Colors.green[56],
-                //   height: 200.0
-                // ),
-                // Container(
-                //   color: Colors.green[57],
-                //   height: 200.0
-                // ),
-                // Container(
-                //   color: Colors.green[58],
-                //   height: 200.0
-                // ),
-                // Container(
-                //   color: Colors.green[59],
-                //   height: 200.0
-                // ),
-                // Container(
-                //   color: Colors.green[60],
-                //   height: 200.0
-                // ),
-
-              ]
-            ),
-          ),
-          // Positioned.fill(child: Image.asset(".../assets/images/cr_placeholder.jpg")),
-          
-          _loadReviews(),
-        ]
+      body: NotificationListener(
+          onNotification: (v) {
+            if (v is ScrollUpdateNotification) {
+              setState(() => top -= v.scrollDelta * 1.6);
+            }
+          },
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                  top: top,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 300.0),
+                    child: Image.asset('assets/images/cr_placeholder.png'),
+                  )
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height,
+              ),
+              _loadReviews()
+            ],
+          )
       ), 
       // body: _loadReviews(),     
     );
