@@ -8,6 +8,7 @@ University of the Philippines, Diliman for the AY 2019-2020.
 
 Code History:
 	Feb 13, 2020: JV Afable - Initialized file. 
+  Mar 12, 2020: JV Afable - Improved UI.
 */
 
 import 'dart:ui';
